@@ -7,6 +7,8 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.io.FileNotFoundException;
+
 public class Game extends Application{
 
     protected Map map;
@@ -48,9 +50,13 @@ public class Game extends Application{
                 gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                 boolean generated = false;
 
-                map.draw_graphic(gc);
                 try {
-                    Thread.sleep(400);
+                    map.draw_graphic(gc);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    Thread.sleep(40);
                 } catch (InterruptedException e) { }
             }
         }.start();

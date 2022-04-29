@@ -1,11 +1,16 @@
 package ant.ants;
 import javafx.scene.canvas.GraphicsContext;
-
+import java.io.FileInputStream;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 public class Case {
 	// Position of the case 
 	int x ;
@@ -29,19 +34,38 @@ public class Case {
 	public void  set_worker () {
 		this.is_worker = true;
 	}
+	public void  unset_worker () {
+		this.is_worker = false;
+	}
 	public void set_officer() {
 		this.is_officer = true;
+	}
+	public void unset_officer() {
+		this.is_officer = false;
 	}
 
 
 	public void draw(GraphicsContext gc)  {
+		// Draw a grid
 		gc.setLineWidth(0.5);
 		gc.setStroke(Color.BLACK);
 		gc.strokeRect(this.x*30,this.y*30,30,30);
+		// Draw grass Tile
+		FileInputStream gras_tile_file = null;
+		try {
+			gras_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/grass_alt1.png");
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+		Image grass_tile = new Image(gras_tile_file);
+		gc.drawImage(grass_tile,this.x*30,this.y*30,30,30);
+
+
 		if(this.is_anthill){
 			gc.setLineWidth(7);
 			gc.setStroke(Color.GREEN);
 			gc.strokeOval(this.x*30 +30/24,this.y*30 + 30/24,10,10);
+
 		}
 		if(this.is_officer){
 			gc.setLineWidth(7);
@@ -49,9 +73,23 @@ public class Case {
 			gc.strokeOval(this.x*30 +30/24 +10,this.y*30 + 30/24 +10,5,5);
 		}
 		if(this.is_worker){
+			// Draw a blue circle to represents worker
+			/*
 			gc.setLineWidth(7);
 			gc.setStroke(Color.BLUE);
-			gc.strokeOval(this.x*30 +30/24 ,this.y*30 + 30/24 +11,1,1);
+			gc.strokeOval(this.x*30 +30/2 ,this.y*30 + 30/2 ,1,1);
+
+			 */
+
+			// Draw worker image
+			FileInputStream ant_tile_file = null;
+			try {
+				ant_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/ant_blue.png");
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+			Image ant_tile = new Image(ant_tile_file);
+			gc.drawImage(ant_tile,this.x*30,this.y*30,20,20);
 		}
 	}
 	public void drawBackground (GraphicsContext gc)  {

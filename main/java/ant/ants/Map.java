@@ -1,6 +1,7 @@
 package ant.ants;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.io.FileNotFoundException;
 import java.util.Random;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class Map {
 		anthills = new ArrayList <Anthill>();
 		String[] colors = {"Red","Blue","Green"};
 		// Create 3 anthill on a random position , set it in a Case and in the Anthill list
-	for (int x = 0;x<3;x++)
+	for (int x = 0;x<1;x++)
 	{
 		// Setting a random position of the anthill
 		Random rand = new Random(); //instance of random class
@@ -120,7 +121,7 @@ public synchronized  void draw()
 }
 
 
-public void draw_graphic(GraphicsContext gc){
+public void draw_graphic(GraphicsContext gc) throws FileNotFoundException {
     for (Case tile : this.tiles) {
         tile.drawBackground(gc);
     }
