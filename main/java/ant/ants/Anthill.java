@@ -12,7 +12,9 @@ public class Anthill extends Thread {
 	public ArrayList <String> content;
 
 	public Map map;
+	// List of all workers on the map
 	protected ArrayList<Worker> workers;
+	// List of all Officers on the map
 	protected ArrayList<Officer> officers;
 
 	protected Thread thread;
@@ -37,7 +39,7 @@ public class Anthill extends Thread {
 
 		workers = new ArrayList<Worker>();
 
-		for (int i = 0; i < 0; i++) {
+		for (int i = 0; i < 3; i++) {
 
 			Officer officer = new Officer(this, i);
 			officers.add(officer);
@@ -56,7 +58,7 @@ public class Anthill extends Thread {
 
 		workers = new ArrayList<Worker>();
 
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 5; i++) {
 
 			Worker worker = new Worker(this, i);
 			workers.add(worker);
@@ -74,37 +76,37 @@ public class Anthill extends Thread {
 	public void run() {
 		// While true to not stop drawing
 		while (true) {
-			try {
-				System.out.println(
-						"Anthill" + this.id + "is called "+"\n"
 
-				);
-				Thread.sleep(50);
+			System.out.println(
+					"Anthill" + this.id + "is called "+"\n"
 
-				for (Officer officer : officers) {
-					System.out.println("Fourmiliere " + officer.queen.id + " Officer" + officer.id + " pos:" + officer.x + "," + officer.y);
-					if ((officer.thread == null) || (!officer.thread.isAlive())) {
-						officer.thread = new Thread(officer);
-						officer.thread.start();
+			);
+			for (Officer officer : officers) {
+				if ((officer.thread == null) || (!officer.thread.isAlive())) {
+					officer.thread = new Thread(officer);
+					officer.thread.start();
 
+					try {
 						Thread.sleep(50);
+					} catch (InterruptedException e) {
+						throw new RuntimeException(e);
 					}
+
 				}
-
-				for (Worker worker : workers) {
-					System.out.println("Fourmiliere " + worker.queen.id + " worker" + worker.id + " pos:" + worker.x + "," + worker.y);
-					if ((worker.thread == null) || (!worker.thread.isAlive())) {
-						worker.thread = new Thread(worker);
-						worker.thread.start();
-
-						Thread.sleep(50);
-					}
-				}
-
-
-			} catch (InterruptedException exc) {
-				exc.printStackTrace();
 			}
+			for (Worker worker : workers) {
+				if ((worker.thread == null) || (!worker.thread.isAlive())) {
+					worker.thread = new Thread(worker);
+					worker.thread.start();
+
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+
 
 		}
 

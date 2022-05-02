@@ -70,15 +70,10 @@ public class Worker extends Ant implements Observer {
 	}
 	
 	   public void run(){
-	        try {
-	            System.out.println(
-	            		"Worker" + this.id+" de anthill "+this.queen.id+" called"+"\n"
-	                );
-	            this.move();
-	                Thread.sleep(1500);
-	            
-	        } catch (InterruptedException exc) {
-	            exc.printStackTrace();
-	        }
-	    }
+		   System.out.println(
+				   "Worker called"+"\n"
+			   );
+		   this.move();
+
+	   }
 }

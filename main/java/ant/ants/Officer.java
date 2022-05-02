@@ -3,6 +3,7 @@ package ant.ants;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class Officer  extends Ant  implements Observer{
@@ -34,27 +35,32 @@ public class Officer  extends Ant  implements Observer{
         tile_old_officer = this.queen.map.get_tile_with_coord(this.x,this.y);
         tile_old_officer.unset_officer();
         // Choosing a random value in Array
-        Integer[] directions = {-1, 0,1,};
-        int random_x_dir = new Random().nextInt(directions.length);
-        int random_y_dir = new Random().nextInt(directions.length);
-        this.x = this.x +random_x_dir;
+        int random_x_dir = ThreadLocalRandom.current().nextInt(-1, 1 + 1);
+        int random_y_dir = ThreadLocalRandom.current().nextInt(-1, 1 + 1);
+        // Update the ant position
+        this.x = this.x + random_x_dir;
         this.y = this.y +random_y_dir;
         // If x or y overflow a border of the map . The ant will be on the opposite position (It works as a spherical
-        if (this.x>25){
-            this.x = 1;
+
+        // Upper bound is 25-1 = 24
+        // If the ant overflow the right corner of the grid it will be replaced to the 1st , on the left border
+        if (this.x>24){
+            this.x = 0;
         }
-        if (this.y>20)
+        // Upper bound is 21-1 = 20
+        // If the ant overflow the bottom corner of the grid it will be replaced to the 1st , on the top border
+        if (this.y>19)
         {
-            this.y = 1;
+            this.y = 0;
 
         }
         if (this.x<0)
         {
-            this.x = 25;
+            this.x = 24;
         }
         if (this.y<0)
         {
-            this.y = 20;
+            this.y = 19;
         }
         // Update worker position on the map
         Case tile_officer;
