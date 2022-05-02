@@ -8,6 +8,9 @@ public class Anthill extends Thread {
 	int y;
 	String color;
 
+	// Content is a list of all content in the tile , due to the fact that a tile may contain more than 1 ant
+	public ArrayList <String> content;
+
 	public Map map;
 	protected ArrayList<Worker> workers;
 	protected ArrayList<Officer> officers;
@@ -30,19 +33,26 @@ public class Anthill extends Thread {
 		officers = new ArrayList<Officer>();
 
 
-		// Create an officer
-		/*
-		Officer officer = new Officer(this, 1);
-		officers.add(officer);
+		// Create 3 officers
 
-		Case tile_officer;
-		tile_officer = this.map.get_tile_with_coord(this.x, this.y);
-		tile_officer.set_officer();
+		workers = new ArrayList<Worker>();
 
-		 */
+		for (int i = 0; i < 0; i++) {
+
+			Officer officer = new Officer(this, i);
+			officers.add(officer);
+
+			Case tile_officer;
+			tile_officer = this.map.get_tile_with_coord(this.x, this.y);
+			tile_officer.set_officer();
+		}
 
 
-		// Create 2 workers 
+
+
+
+
+		// Create 5 workers
 
 		workers = new ArrayList<Worker>();
 
@@ -62,10 +72,11 @@ public class Anthill extends Thread {
 	}
 
 	public void run() {
+		// While true to not stop drawing
 		while (true) {
 			try {
 				System.out.println(
-						"Anthill" + this.id + " pos:" + this.x + "," + this.y + "\n"
+						"Anthill" + this.id + "is called "+"\n"
 
 				);
 				Thread.sleep(50);
@@ -76,7 +87,7 @@ public class Anthill extends Thread {
 						officer.thread = new Thread(officer);
 						officer.thread.start();
 
-						Thread.sleep(300);
+						Thread.sleep(50);
 					}
 				}
 
@@ -86,7 +97,7 @@ public class Anthill extends Thread {
 						worker.thread = new Thread(worker);
 						worker.thread.start();
 
-						Thread.sleep(1500);
+						Thread.sleep(50);
 					}
 				}
 

@@ -10,12 +10,14 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class Case {
 	// Position of the case 
 	int x ;
 	int y ;
 	int ressources ;
+
 	boolean is_anthill = false;
 	boolean is_worker = false;
 	boolean is_officer = false;
@@ -45,35 +47,51 @@ public class Case {
 	}
 
 
-	public void draw(GraphicsContext gc)  {
-		// Draw a grid
-		gc.setLineWidth(0.5);
-		gc.setStroke(Color.BLACK);
-		gc.strokeRect(this.x*30,this.y*30,30,30);
-		// Draw grass Tile
-		FileInputStream gras_tile_file = null;
-		try {
-			gras_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/grass_alt1.png");
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-		Image grass_tile = new Image(gras_tile_file);
-		gc.drawImage(grass_tile,this.x*30,this.y*30,30,30);
+	public void draw(GraphicsContext gc) {
+			// Draw a grid
+			gc.setLineWidth(0.5);
+			gc.setStroke(Color.BLACK);
+			gc.strokeRect(this.x * 30, this.y * 30, 30, 30);
+			// Draw grass Tile
+			FileInputStream gras_tile_file = null;
+			try {
+				gras_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/grass_alt1.png");
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+			Image grass_tile = new Image(gras_tile_file);
+			gc.drawImage(grass_tile, this.x * 30, this.y * 30, 30, 30);
+
+			if (this.is_anthill) {
+				FileInputStream anthill_tile_file = null;
+				try {
+					anthill_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/red_anthill.png");
+				} catch (FileNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+				Image anthill_tile = new Image(anthill_tile_file);
+				gc.drawImage(anthill_tile, this.x * 30, this.y * 30, 30, 30);
+
+			}
+			if (this.is_officer) {
+				//gc.setLineWidth(7);
+				//gc.setStroke(Color.RED);
+				//gc.strokeOval(this.x*30 +30/24 +10,this.y*30 + 30/24 +10,5,5);
+				// Draw worker image
 
 
-		if(this.is_anthill){
-			gc.setLineWidth(7);
-			gc.setStroke(Color.GREEN);
-			gc.strokeOval(this.x*30 +30/24,this.y*30 + 30/24,10,10);
-
-		}
-		if(this.is_officer){
-			gc.setLineWidth(7);
-			gc.setStroke(Color.RED);
-			gc.strokeOval(this.x*30 +30/24 +10,this.y*30 + 30/24 +10,5,5);
-		}
-		if(this.is_worker){
-			// Draw a blue circle to represents worker
+				// Draw Officer image
+				FileInputStream officer_tile_file = null;
+				try {
+					officer_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/officer.png");
+				} catch (FileNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+				Image officer_tile = new Image(officer_tile_file);
+				gc.drawImage(officer_tile, this.x * 30, this.y * 30, 20, 20);
+			}
+			if (this.is_worker) {
+				// Draw a blue circle to represents worker
 			/*
 			gc.setLineWidth(7);
 			gc.setStroke(Color.BLUE);
@@ -81,17 +99,18 @@ public class Case {
 
 			 */
 
-			// Draw worker image
-			FileInputStream ant_tile_file = null;
-			try {
-				ant_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/ant_blue.png");
-			} catch (FileNotFoundException e) {
-				throw new RuntimeException(e);
+				// Draw worker image
+				FileInputStream ant_tile_file = null;
+				try {
+					ant_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/ant_blue.png");
+				} catch (FileNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+				Image ant_tile = new Image(ant_tile_file);
+				gc.drawImage(ant_tile, this.x * 30, this.y * 30, 20, 20);
 			}
-			Image ant_tile = new Image(ant_tile_file);
-			gc.drawImage(ant_tile,this.x*30,this.y*30,20,20);
 		}
-	}
+
 	public void drawBackground (GraphicsContext gc)  {
 
 	}

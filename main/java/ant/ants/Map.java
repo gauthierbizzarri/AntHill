@@ -45,8 +45,8 @@ public class Map {
 		// Setting a random position of the anthill
 		Random rand = new Random(); //instance of random class
 	      int upperbound = 50*10;
-	        //generate random value from 0-50*50
-	      int random_position = rand.nextInt(upperbound);
+	        //generate random value
+	      int random_position = 309; // rand.nextInt(upperbound);
 
 
 	      // Setting 1 anthill on the Map
@@ -63,7 +63,7 @@ public class Map {
 		Case tile = this.tiles.get(0);
 		for (Case tile_to_get : this.tiles) {
 			if (tile_to_get.x ==x){
-			
+
 			if (tile_to_get.y ==y) {
 				return tile_to_get;
 								}
