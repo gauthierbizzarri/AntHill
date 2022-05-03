@@ -7,9 +7,18 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Worker extends Ant implements Observer {
+
+	// The worker knows to which anthill she belongs to
 	protected Anthill queen;
-	private boolean find_ressource ;
-	
+
+	// The worker knows to which officer she belongs to
+	protected Officer officer;
+
+
+	// The resources' var represents the amount of gathered resources ( it will be reset to 0 when the worker will drop it in the anthill)
+
+	private int resources;
+
 	// Constructor 
 	 public Worker(Anthill queen , int id)
 	    {
@@ -17,6 +26,7 @@ public class Worker extends Ant implements Observer {
 	        this.x = this.queen.x;
 	        this.y = this.queen.y;
 	        this.id = id;
+			this.resources = 0;
 
 	        this.thread = new Thread();
 	    }
@@ -62,6 +72,21 @@ public class Worker extends Ant implements Observer {
 	    	Case tile_worker;
 			tile_worker = this.queen.map.get_tile_with_coord(this.x,this.y);
 			tile_worker.set_worker();
+
+			// Check if there are resources on this tile .
+		 if(tile_worker.ressources>0)
+		 {
+			 // A worker can gather a maximum of 5 resources
+			 if (tile_worker.ressources<=5){
+				 tile_worker.ressources=0;
+				 this.resources =tile_worker.ressources;
+			 }
+			 if (tile_worker.ressources>5)
+			 {
+				 tile_worker.ressources = tile_worker.ressources-5;
+				 this.resources = 5;
+			 }
+		 }
 	    }
 	 
 	@Override
@@ -70,10 +95,13 @@ public class Worker extends Ant implements Observer {
 	}
 	
 	   public void run(){
-		   System.out.println(
-				   "Worker called"+"\n"
-			   );
+		   //System.out.println("Worker called"+"\n");
+
+		   //If the worker has no resources it moves using move() method (ie the ant will move randomly(-1,0,+1)
+
 		   this.move();
+
+		   // If the worker has gathered resources , it will go back to the anthill to drop the resources.
 
 	   }
 }

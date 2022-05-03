@@ -101,6 +101,9 @@ public class Case {
 	public void drawBackground (GraphicsContext gc)  {
 
 
+		// Draw the amount of resources in the tile
+		gc.fillText(String.valueOf(this.ressources),this.x*30,this.y*30);
+
 		// Draw a grid
 		gc.setLineWidth(0.5);
 		gc.setStroke(Color.BLACK);
@@ -114,6 +117,9 @@ public class Case {
 		}
 		Image grass_tile = new Image(gras_tile_file);
 		gc.drawImage(grass_tile, this.x * 30, this.y * 30, 30, 30);
+
+
+
 	}
 
 

@@ -33,7 +33,13 @@ public class Map {
         {
             for ( j =0; j < 20; j++)
             {
-                Case case_created = new Case(i, j,10);
+                // Setting a random position of the anthill
+                Random rand = new Random(); //instance of random class
+                // Resources go from 0 to 50
+                int upperbound = 50;
+                //generate random value
+                int random_resources = rand.nextInt(upperbound);
+                Case case_created = new Case(i, j,random_resources);
                 this.tiles.add(case_created);
             }
         }
@@ -42,7 +48,7 @@ public class Map {
 		anthills = new ArrayList <Anthill>();
 		String[] colors = {"Red","Blue","Green"};
 		// Create 3 anthill on a random position , set it in a Case and in the Anthill list
-	for (int x = 0;x<3;x++)
+	for (int x = 0;x<1;x++)
 	{
 		// Setting a random position of the anthill
 		Random rand = new Random(); //instance of random class

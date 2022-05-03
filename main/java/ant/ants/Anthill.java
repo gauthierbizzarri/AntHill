@@ -8,6 +8,8 @@ public class Anthill extends Thread {
 	int y;
 	String color;
 
+	int resources;
+
 	// Content is a list of all content in the tile , due to the fact that a tile may contain more than 1 ant
 	public ArrayList <String> content;
 
@@ -39,7 +41,7 @@ public class Anthill extends Thread {
 
 		officers = new ArrayList<Officer>();
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 0; i++) {
 
 			Officer officer = new Officer(this, i);
 			officers.add(officer);
@@ -87,7 +89,7 @@ public class Anthill extends Thread {
 					officer.thread.start();
 
 					try {
-						Thread.sleep(50);
+						Thread.sleep(150);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
 					}
@@ -100,7 +102,7 @@ public class Anthill extends Thread {
 					worker.thread.start();
 
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(150);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
 					}
