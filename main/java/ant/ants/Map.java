@@ -1,6 +1,8 @@
 package ant.ants;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Random;
 
@@ -40,13 +42,13 @@ public class Map {
 		anthills = new ArrayList <Anthill>();
 		String[] colors = {"Red","Blue","Green"};
 		// Create 3 anthill on a random position , set it in a Case and in the Anthill list
-	for (int x = 0;x<1;x++)
+	for (int x = 0;x<3;x++)
 	{
 		// Setting a random position of the anthill
 		Random rand = new Random(); //instance of random class
 	      int upperbound = 50*10;
 	        //generate random value
-	      int random_position = 309; // rand.nextInt(upperbound);
+	      int random_position = rand.nextInt(upperbound);
 
 
 	      // Setting 1 anthill on the Map
@@ -76,7 +78,6 @@ public class Map {
 public synchronized  void draw()
 {
     int i = 0;
-    System.out.println("Map \n");
     System.out.println("\n");    
     for(Case c :this.tiles)
     {
@@ -122,11 +123,33 @@ public synchronized  void draw()
 
 
 public void draw_graphic(GraphicsContext gc) throws FileNotFoundException {
+        // Draw for every tile a grass tile
     for (Case tile : this.tiles) {
         tile.drawBackground(gc);
     }
+    // Draw the content in the tile
+
     for (Case tile : this.tiles) {
         tile.draw(gc);
+    }
+    // Draw the Score interface
+
+    gc.fillText("Score",25*32,20);
+
+    // For each anthill we will display a picture of it (with his color)
+    // We will print the score(the amount of gathered resources & the content of the hill (number of Workers & Officers)
+
+    int separator = 0;
+    for (Anthill anthill : this.anthills) {
+        FileInputStream anthill_tile_file = null;
+        try {
+            anthill_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/red_anthill.png");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        Image anthill_tile = new Image(anthill_tile_file);
+        gc.drawImage(anthill_tile, 25 * 30, 50+separator, 30, 30);
+        separator= separator+200;
     }
 }
 

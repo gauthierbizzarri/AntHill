@@ -35,7 +35,7 @@ public class Game extends Application{
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        Canvas canvas = new Canvas( 25*30, 20*30 );
+        Canvas canvas = new Canvas( 25*30 + 25*30/6, 20*30  );
         root.getChildren().add( canvas );
 
         map = new Map();

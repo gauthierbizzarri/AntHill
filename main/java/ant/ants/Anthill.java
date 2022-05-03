@@ -37,7 +37,7 @@ public class Anthill extends Thread {
 
 		// Create 3 officers
 
-		workers = new ArrayList<Worker>();
+		officers = new ArrayList<Officer>();
 
 		for (int i = 0; i < 3; i++) {
 

@@ -48,19 +48,6 @@ public class Case {
 
 
 	public void draw(GraphicsContext gc) {
-			// Draw a grid
-			gc.setLineWidth(0.5);
-			gc.setStroke(Color.BLACK);
-			gc.strokeRect(this.x * 30, this.y * 30, 30, 30);
-			// Draw grass Tile
-			FileInputStream gras_tile_file = null;
-			try {
-				gras_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/grass_alt1.png");
-			} catch (FileNotFoundException e) {
-				throw new RuntimeException(e);
-			}
-			Image grass_tile = new Image(gras_tile_file);
-			gc.drawImage(grass_tile, this.x * 30, this.y * 30, 30, 30);
 
 			if (this.is_anthill) {
 				FileInputStream anthill_tile_file = null;
@@ -113,6 +100,20 @@ public class Case {
 
 	public void drawBackground (GraphicsContext gc)  {
 
+
+		// Draw a grid
+		gc.setLineWidth(0.5);
+		gc.setStroke(Color.BLACK);
+		gc.strokeRect(this.x * 30, this.y * 30, 30, 30);
+		// Draw grass Tile
+		FileInputStream gras_tile_file = null;
+		try {
+			gras_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/grass_alt1.png");
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+		Image grass_tile = new Image(gras_tile_file);
+		gc.drawImage(grass_tile, this.x * 30, this.y * 30, 30, 30);
 	}
 
 
