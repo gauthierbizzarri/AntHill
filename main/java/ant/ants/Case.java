@@ -31,6 +31,7 @@ public class Case {
 
 	public void  set_anthill () {
 		this.is_anthill = true;
+		this.ressources = 0;
 	}
 	
 	public void  set_worker () {

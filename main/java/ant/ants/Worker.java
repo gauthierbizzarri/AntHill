@@ -1,9 +1,9 @@
 package ant.ants;
 
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Random;
+import java.lang.Math;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Worker extends Ant implements Observer {
@@ -89,18 +89,43 @@ public class Worker extends Ant implements Observer {
 			 }
 		 }
 	    }
-	 
+
+		public void go_back_home(){
+		 int x_home = this.queen.x ;
+		 int y_home = this.queen.y;
+		 int delta_x = x_home - this.x ;
+		int delta_y = y_home - this.y;
+	 	double delta_x_sqr = delta_x*delta_x;
+		double delta_y_sqr = delta_y*delta_y;
+		double sqrt_delta = delta_x_sqr-delta_y_sqr;
+	 	double length = Math.pow(sqrt_delta,1/2);
+
+		this.x = (int) (this.x + delta_x/length);
+		this.y = (int) (this.y + delta_y/length);
+		}
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		
 	}
-	
+
 	   public void run(){
+		   System.out.println("Worker MOVE"+this.resources);
 		   //System.out.println("Worker called"+"\n");
 
-		   //If the worker has no resources it moves using move() method (ie the ant will move randomly(-1,0,+1)
+		   //If the worker has not a full inventory (<5 resources it moves using move() method (ie the ant will move randomly(-1,0,+1)
 
-		   this.move();
+		   if (this.resources<=5) {
+			   System.out.println("Worker MOVE"+"\n");
+			   this.move();
+		   }
+
+		   // If the worker has 5 or more resources it will go back home by taking a direct path using the
+		   else {
+
+			   System.out.println("Worker HOME"+"\n");
+			   this.go_back_home();
+		   }
+
 
 		   // If the worker has gathered resources , it will go back to the anthill to drop the resources.
 
