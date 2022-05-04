@@ -42,6 +42,7 @@ public class Map {
                 Case case_created = new Case(i, j,random_resources);
                 this.tiles.add(case_created);
             }
+
         }
     }
 	public void add_anthill() {
@@ -129,10 +130,6 @@ public synchronized  void draw()
 
 
 public void draw_graphic(GraphicsContext gc) throws FileNotFoundException {
-        // Draw for every tile a grass tile
-    for (Case tile : this.tiles) {
-        tile.drawBackground(gc);
-    }
     // Draw the content in the tile
 
     for (Case tile : this.tiles) {

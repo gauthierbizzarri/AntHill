@@ -60,7 +60,7 @@ public class Anthill extends Thread {
 
 		workers = new ArrayList<Worker>();
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 1; i++) {
 
 			Worker worker = new Worker(this, i);
 			workers.add(worker);
@@ -89,7 +89,7 @@ public class Anthill extends Thread {
 					officer.thread.start();
 
 					try {
-						Thread.sleep(150);
+						Thread.sleep(500);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
 					}
@@ -102,7 +102,7 @@ public class Anthill extends Thread {
 					worker.thread.start();
 
 					try {
-						Thread.sleep(150);
+						Thread.sleep(1500);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
 					}

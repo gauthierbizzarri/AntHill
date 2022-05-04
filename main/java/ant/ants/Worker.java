@@ -73,6 +73,7 @@ public class Worker extends Ant implements Observer {
 			tile_worker = this.queen.map.get_tile_with_coord(this.x,this.y);
 			tile_worker.set_worker();
 
+
 			// Check if there are resources on this tile .
 		 if(tile_worker.ressources>0)
 		 {

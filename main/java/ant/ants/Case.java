@@ -49,7 +49,34 @@ public class Case {
 
 	public void draw(GraphicsContext gc) {
 
-			if (this.is_anthill) {
+
+
+		//gc.strokeOval(this.x*30,this.y*30 + 30/4,5,5);
+
+		// Draw a grid
+		gc.setLineWidth(0.5);
+		gc.setStroke(Color.BLACK);
+		gc.strokeRect(this.x * 30, this.y * 30, 30, 30);
+		// Draw grass Tile
+		FileInputStream gras_tile_file = null;
+		try {
+			gras_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/grass_alt1.png");
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+		Image grass_tile = new Image(gras_tile_file);
+		gc.drawImage(grass_tile, this.x * 30, this.y * 30, 30, 30);
+
+		// Draw the amount of resources in the tile
+		//gc.fillText(String.valueOf(this.ressources),this.x*30,this.y*30);
+
+		gc.setStroke(Color.YELLOW);
+
+		gc.setLineWidth(2);
+		gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4*this.ressources/10,4*this.ressources/10);
+
+
+		if (this.is_anthill) {
 				FileInputStream anthill_tile_file = null;
 				try {
 					anthill_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/red_anthill.png");
@@ -101,22 +128,6 @@ public class Case {
 	public void drawBackground (GraphicsContext gc)  {
 
 
-		// Draw the amount of resources in the tile
-		gc.fillText(String.valueOf(this.ressources),this.x*30,this.y*30);
-
-		// Draw a grid
-		gc.setLineWidth(0.5);
-		gc.setStroke(Color.BLACK);
-		gc.strokeRect(this.x * 30, this.y * 30, 30, 30);
-		// Draw grass Tile
-		FileInputStream gras_tile_file = null;
-		try {
-			gras_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/grass_alt1.png");
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-		Image grass_tile = new Image(gras_tile_file);
-		gc.drawImage(grass_tile, this.x * 30, this.y * 30, 30, 30);
 
 
 
