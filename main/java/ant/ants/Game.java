@@ -42,10 +42,31 @@ public class Game extends Application{
         Scene scene = new Scene(root);
         stage.setScene(scene);
         Canvas canvas = new Canvas( 25*30 + 25*30/6, 20*30  );
-        Button b = new Button("button");
-        b.setOnAction(event);
+
         root.getChildren().add( canvas );
+
+        // Buttons in order to change the order of the anthill
+
+        // 1st Anthill
+        Button b = new Button("1");
+        b.setLayoutX(25 * 30+ 100);
+        b.setLayoutY(60);
+        b.setOnAction(event);
         root.getChildren().add(b);
+
+        //  2 nd Anthill
+        Button b1 = new Button("2");
+        b1.setLayoutX(25 * 30+ 100);
+        b1.setLayoutY(60+200);
+        b1.setOnAction(event);
+        root.getChildren().add(b1);
+
+        //  3 nd Anthill
+        Button b2 = new Button("3");
+        b2.setLayoutX(25 * 30+ 100);
+        b2.setLayoutY(60+400);
+        b2.setOnAction(event);
+        root.getChildren().add(b2);
 
         map = new Map();
         map.create_map();
