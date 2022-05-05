@@ -1,6 +1,7 @@
 package ant.ants;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -47,20 +48,24 @@ public class Map {
     }
 	public void add_anthill() {
 		anthills = new ArrayList <Anthill>();
-		String[] colors = {"Red","Blue","Green"};
+		String[] colors = {"Red","Green","Blue"};
 		// Create 3 anthill on a random position , set it in a Case and in the Anthill list
-	for (int x = 0;x<1;x++)
+	for (int x = 0;x<3;x++)
 	{
 		// Setting a random position of the anthill
 		Random rand = new Random(); //instance of random class
 	      int upperbound = 50*10;
-	        //generate random value
+	        //generate random postition
 	      int random_position = rand.nextInt(upperbound);
 
+          // Random index in order to generate random color
+        //int rnd_color = new Random().nextInt(colors.length);
 
-	      // Setting 1 anthill on the Map
-	      Case random_case =  tiles.get(random_position);
-	      random_case.set_anthill();
+
+	      // Setting  anthill randomly on the Map
+            Case random_case =  tiles.get(random_position);
+            random_case.set_anthill();
+            random_case.set_color(colors[x]);
 
 	      // Creating a Anthill and setting up to the case position
 	      Anthill anthill = new Anthill(x,random_case.x,random_case.y,this,colors[x]);
@@ -154,6 +159,16 @@ public void draw_graphic(GraphicsContext gc) throws FileNotFoundException {
         Image anthill_tile = new Image(anthill_tile_file);
         gc.drawImage(anthill_tile, 25 * 30, 50+separator, 30, 30);
         gc.fillText(String.valueOf(anthill.resources),25 * 30 + 40,50+separator + 15);
+
+        // Drawing the color of the anthill on the score board
+        System.out.println(anthill.color);
+        if(anthill.color =="Red"){gc.setStroke(Color.RED);}
+        if(anthill.color =="Green"){gc.setStroke(Color.GREEN);}
+        if(anthill.color =="Blue"){gc.setStroke(Color.BLUE);}
+
+
+        gc.setLineWidth(7);
+        gc.strokeOval(25 * 30+12  ,50+separator+10,4,4);
         separator= separator+200;
     }
 }

@@ -29,6 +29,7 @@ public class Worker extends Ant implements Observer {
 			this.resources = 0;
 
 	        this.thread = new Thread();
+			this.color = this.queen.color;
 	    }
 	 
 	 public void move() {
@@ -38,6 +39,7 @@ public class Worker extends Ant implements Observer {
 		 Case tile_old_worker;
 		 tile_old_worker = this.queen.map.get_tile_with_coord(this.x,this.y);
 		 tile_old_worker.unset_worker();
+		 tile_old_worker.set_color("");
 		 // Choosing a random value
 		 int random_x_dir = ThreadLocalRandom.current().nextInt(-1, 1 + 1);
 		 int random_y_dir = ThreadLocalRandom.current().nextInt(-1, 1 + 1);
@@ -72,6 +74,8 @@ public class Worker extends Ant implements Observer {
 	    	Case tile_worker;
 			tile_worker = this.queen.map.get_tile_with_coord(this.x,this.y);
 			tile_worker.set_worker();
+			// Setting the color
+		 	tile_worker.set_color(this.color);
 
 
 			// Check if there are resources on this tile .
@@ -106,6 +110,7 @@ public class Worker extends Ant implements Observer {
 		Case tile_old_worker;
 		tile_old_worker = this.queen.map.get_tile_with_coord(this.x,this.y);
 		tile_old_worker.unset_worker();
+		tile_old_worker.set_color("");
 
 
 		this.x = (int) (this.x + delta_x/length);
@@ -115,6 +120,7 @@ public class Worker extends Ant implements Observer {
 		Case tile_worker;
 		tile_worker = this.queen.map.get_tile_with_coord(this.x,this.y);
 		tile_worker.set_worker();
+			tile_old_worker.set_color(this.color);
 		}
 	@Override
 	public void update(Observable arg0, Object arg1) {
@@ -126,6 +132,7 @@ public class Worker extends Ant implements Observer {
 		   //System.out.println("Worker called"+"\n");
 
 		   // If the worker has gathered resources , and the worker is at his anthill , drop the resources.
+
 
 		   if (this.x == this.queen.x && this.y ==this.queen.y && this.resources>0)
 		   {

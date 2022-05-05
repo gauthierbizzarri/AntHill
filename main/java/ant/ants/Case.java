@@ -21,11 +21,14 @@ public class Case {
 	boolean is_anthill = false;
 	boolean is_worker = false;
 	boolean is_officer = false;
+	String color= "";
 	
 	Case(int x, int y , int ressource){
         this.x = x;
         this.y = y;
         this.ressources = ressource;
+		this.color = "";
+
         
     }
 
@@ -47,6 +50,9 @@ public class Case {
 		this.is_officer = false;
 	}
 
+	public void set_color(String color){
+		if (this.is_anthill){ return;}
+		this.color = color;}
 
 	public void draw(GraphicsContext gc) {
 
@@ -68,14 +74,16 @@ public class Case {
 		Image grass_tile = new Image(gras_tile_file);
 		gc.drawImage(grass_tile, this.x * 30, this.y * 30, 30, 30);
 
-		// Draw the amount of resources in the tile
-		//gc.fillText(String.valueOf(this.ressources),this.x*30,this.y*30);
+		// Draw the amount of resources in the tile as a yellow circle of variable radius : radius(resources) = 4/10 * resources
 
 		gc.setStroke(Color.YELLOW);
 
 		gc.setLineWidth(2);
 		gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4*this.ressources/10,4*this.ressources/10);
 
+		gc.setStroke(Color.TRANSPARENT);
+
+		// Drawing the anthill
 
 		if (this.is_anthill) {
 				FileInputStream anthill_tile_file = null;
@@ -86,6 +94,13 @@ public class Case {
 				}
 				Image anthill_tile = new Image(anthill_tile_file);
 				gc.drawImage(anthill_tile, this.x * 30, this.y * 30, 30, 30);
+
+			if(this.color =="Red"){gc.setStroke(Color.RED);}
+			if(this.color =="Green"){gc.setStroke(Color.GREEN);}
+			if(this.color =="Blue"){gc.setStroke(Color.BLUE);}
+			gc.setLineWidth(7);
+			gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4,4);
+
 
 			}
 			if (this.is_officer) {
@@ -104,6 +119,13 @@ public class Case {
 				}
 				Image officer_tile = new Image(officer_tile_file);
 				gc.drawImage(officer_tile, this.x * 30, this.y * 30, 20, 20);
+				if(this.color =="Red"){gc.setStroke(Color.RED);}
+				if(this.color =="Green"){gc.setStroke(Color.GREEN);}
+				if(this.color =="Blue"){gc.setStroke(Color.BLUE);}
+
+
+				gc.setLineWidth(7);
+				gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4,4);
 			}
 			if (this.is_worker) {
 				// Draw a blue circle to represents worker
@@ -123,7 +145,18 @@ public class Case {
 				}
 				Image ant_tile = new Image(ant_tile_file);
 				gc.drawImage(ant_tile, this.x * 30, this.y * 30, 20, 20);
+				if(this.color =="Red"){gc.setStroke(Color.RED);}
+				if(this.color =="Green"){gc.setStroke(Color.GREEN);}
+				if(this.color =="Blue"){gc.setStroke(Color.BLUE);}
+
+
+				gc.setLineWidth(7);
+				gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4,4);
+
+
+
 			}
+
 		}
 
 	public void drawBackground (GraphicsContext gc)  {
