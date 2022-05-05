@@ -63,7 +63,7 @@ public class Anthill extends Thread {
 
 		workers = new ArrayList<Worker>();
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 0; i++) {
 
 			Worker worker = new Worker(this, i);
 			workers.add(worker);

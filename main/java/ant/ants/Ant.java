@@ -8,6 +8,8 @@ public class Ant  extends Thread {
     protected int x;
     protected int y;
     protected String color;
+    public boolean must_ho_home;
+    public boolean stop;
     
 
 }

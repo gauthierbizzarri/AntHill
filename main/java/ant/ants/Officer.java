@@ -25,9 +25,14 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
         // Officer id 
         this.id = id;
 
+        this.stop = false;
+        this.must_ho_home = false;
+
 		this.thread = new Thread(this);
         this.color = this.queen.color ;
         this.subscriberName = String.valueOf(this.queen.id);
+
+
         // 
        
         
@@ -75,12 +80,51 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
         tile_officer.set_officer();
         // Update the color
         tile_officer.set_color(this.color);
+
+    }
+    public void go_back_home(){
+        // Drawing a direct line (Pythagore) to the home
+        int x_home = this.queen.x ;
+        int y_home = this.queen.y;
+        int delta_x = x_home - this.x ;
+        int delta_y = y_home - this.y;
+        double delta_x_sqr = delta_x*delta_x;
+        double delta_y_sqr = delta_y*delta_y;
+        double sqrt_delta = delta_x_sqr-delta_y_sqr;
+        double length = Math.pow(sqrt_delta,1/2);
+
+        // Remove old worker position from the map
+        Case tile_old_officer;
+        tile_old_officer = this.queen.map.get_tile_with_coord(this.x,this.y);
+        tile_old_officer.unset_officer();
+        tile_old_officer.set_color("");
+
+
+        this.x = (int) (this.x + delta_x/length);
+        this.y = (int) (this.y + delta_y/length);
+
+        // Update worker position on the map
+        Case tile_officer;
+        tile_officer = this.queen.map.get_tile_with_coord(this.x,this.y);
+        tile_officer.set_officer();
+        tile_officer.set_color(this.color);
     }
       
     public void run(){
+        if (this.must_ho_home){this.go_back_home();}
+
+        if(this.must_ho_home && this.x == this.queen.x && this.y == this.queen.y){ this.stop = true;
+        }
+        if (this.stop == true){
+            System.out.println("has stopeed");
+            return;
+        }
+
+
         // System.out.println("Officer" + this.id+" de anthill "+this.queen.id+" called"+"\n");
         this.move();
-        ;
+
+
 
     }
 
@@ -96,10 +140,11 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
     // order 0 : go home , order 1 : collect resources
     public void onNext(final Integer order) {
         if (order == 0) {
-            System.out.println("WE LL  gather resources");
+            System.out.println("GO HOME ");
+            this.must_ho_home = true;
         }
         if (order == 1) {
-            System.out.println("I ll go home ");
+            System.out.println("...");
         }
         try {
             this.thread.sleep(150);
