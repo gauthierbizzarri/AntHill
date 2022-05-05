@@ -1,6 +1,5 @@
 package ant.ants;
 
-import java.util.Observable;
 public class Ant  extends Thread {
 	
     protected Thread thread;

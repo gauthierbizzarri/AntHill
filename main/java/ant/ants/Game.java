@@ -51,7 +51,7 @@ public class Game extends Application{
                     throw new RuntimeException(e);
                 }
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) { }
             }
         }.start();

@@ -1,6 +1,8 @@
 package ant.ants;
-import java.util.ArrayList; 
-
+import java.util.ArrayList;
+import java.util.concurrent.SubmissionPublisher;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 
 public class Anthill extends Thread {
 	int id;
@@ -41,7 +43,7 @@ public class Anthill extends Thread {
 
 		officers = new ArrayList<Officer>();
 
-		for (int i = 0; i < 0; i++) {
+		for (int i = 0; i < 3; i++) {
 
 			Officer officer = new Officer(this, i);
 			officers.add(officer);
@@ -60,7 +62,7 @@ public class Anthill extends Thread {
 
 		workers = new ArrayList<Worker>();
 
-		for (int i = 0; i < 0; i++) {
+		for (int i = 0; i < 5; i++) {
 
 			Worker worker = new Worker(this, i);
 			workers.add(worker);
@@ -78,18 +80,33 @@ public class Anthill extends Thread {
 	public void run() {
 		// While true to not stop drawing
 		while (true) {
+			final SubmissionPublisher<Integer> publisher =
+					new SubmissionPublisher<>(ForkJoinPool.commonPool(), 20);
 
-			System.out.println(
-					"Anthill" + this.id + "is called "+"\n"
 
-			);
 			for (Officer officer : officers) {
+
+				publisher.subscribe(officer);
+				int order = 0;
+				int MAX_SECONDS_TO_KEEP_IT_WHEN_NO_SPACE = 2;
+				final int lag = publisher.offer(
+						order,
+						MAX_SECONDS_TO_KEEP_IT_WHEN_NO_SPACE,
+						TimeUnit.SECONDS,
+						(subscriber, msg) -> {
+							subscriber.onError(
+									new RuntimeException("Hey " + ((Officer) subscriber)
+											.getSubscriberName() + "! You are too slow getting orders" +
+											" and we don't have more space for them! " +
+											"I'll drop your order: " + msg));
+							return false; // don't retry, we don't believe in second opportunities
+						});
 				if ((officer.thread == null) || (!officer.thread.isAlive())) {
 					officer.thread = new Thread(officer);
 					officer.thread.start();
 
 					try {
-						Thread.sleep(500);
+						Thread.sleep(20);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
 					}
@@ -97,12 +114,14 @@ public class Anthill extends Thread {
 				}
 			}
 			for (Worker worker : workers) {
+
+				//publisher.subscribe(worker);
 				if ((worker.thread == null) || (!worker.thread.isAlive())) {
 					worker.thread = new Thread(worker);
 					worker.thread.start();
 
 					try {
-						Thread.sleep(1200);
+						Thread.sleep(20);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
 					}

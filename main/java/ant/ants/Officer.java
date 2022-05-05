@@ -4,13 +4,17 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.Flow;
+import java.util.stream.IntStream;
 
 
-public class Officer  extends Ant  implements Observer{
+public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
     
     
     protected Anthill queen;
-    
+
+    private Flow.Subscription subscription;
+    private final String subscriberName;
     public Officer(Anthill queen, int id)
     {
     	// This officer belongs to a queen(anthill)
@@ -22,6 +26,8 @@ public class Officer  extends Ant  implements Observer{
         this.id = id;
 
 		this.thread = new Thread(this);
+        this.color = this.queen.color ;
+        this.subscriberName = "";
         // 
        
         
@@ -34,6 +40,7 @@ public class Officer  extends Ant  implements Observer{
         Case tile_old_officer;
         tile_old_officer = this.queen.map.get_tile_with_coord(this.x,this.y);
         tile_old_officer.unset_officer();
+        tile_old_officer.set_color("");
         // Choosing a random value in Array
         int random_x_dir = ThreadLocalRandom.current().nextInt(-1, 1 + 1);
         int random_y_dir = ThreadLocalRandom.current().nextInt(-1, 1 + 1);
@@ -66,26 +73,56 @@ public class Officer  extends Ant  implements Observer{
         Case tile_officer;
         tile_officer = this.queen.map.get_tile_with_coord(this.x,this.y);
         tile_officer.set_officer();
+        // Update the color
+        tile_officer.set_color(this.color);
     }
       
     public void run(){
-        try {
-            System.out.println(
-                "Officer" + this.id+" de anthill "+this.queen.id+" called"+"\n"
-                );
-            this.move();
-                Thread.sleep(50);  
-            
-        } catch (InterruptedException exc) {
-            exc.printStackTrace();
-        }
+        System.out.println(
+            "Officer" + this.id+" de anthill "+this.queen.id+" called"+"\n"
+            );
+        this.move();
+        ;
+
     }
 
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-    
+    @Override
+    public void onSubscribe(Flow.Subscription subscription) {
+        this.subscription = subscription;
+        subscription.request(1);
+
+    }
+
+    @Override
+    // order 0 : go home , order 1 : collect resources
+    public void onNext(final Integer order) {
+        if (order == 0) {
+            System.out.println("WE LL  gather resources");
+        }
+        if (order == 1) {
+            System.out.println("I ll go home ");
+        }
+        try {
+            this.thread.sleep(150);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+
+        System.out.println("ERROR OCCURED"+throwable);
+    }
+
+    @Override
+    public void onComplete() {
+        System.out.println("ORDER PASSED");
+
+    }
+    public String getSubscriberName() {
+        return subscriberName;
+    }
 }

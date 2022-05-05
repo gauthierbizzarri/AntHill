@@ -118,7 +118,7 @@ public class Case {
 					throw new RuntimeException(e);
 				}
 				Image officer_tile = new Image(officer_tile_file);
-				gc.drawImage(officer_tile, this.x * 30, this.y * 30, 20, 20);
+				gc.drawImage(officer_tile, this.x * 30, this.y * 30, 25, 25);
 				if(this.color =="Red"){gc.setStroke(Color.RED);}
 				if(this.color =="Green"){gc.setStroke(Color.GREEN);}
 				if(this.color =="Blue"){gc.setStroke(Color.BLUE);}
@@ -151,7 +151,7 @@ public class Case {
 
 
 				gc.setLineWidth(7);
-				gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4,4);
+				gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,2,2);
 
 
 
