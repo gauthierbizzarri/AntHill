@@ -90,18 +90,31 @@ public class Worker extends Ant implements Observer {
 		 }
 	    }
 
+
 		public void go_back_home(){
-		 int x_home = this.queen.x ;
-		 int y_home = this.queen.y;
-		 int delta_x = x_home - this.x ;
-		int delta_y = y_home - this.y;
-	 	double delta_x_sqr = delta_x*delta_x;
-		double delta_y_sqr = delta_y*delta_y;
-		double sqrt_delta = delta_x_sqr-delta_y_sqr;
-	 	double length = Math.pow(sqrt_delta,1/2);
+		 // Drawing a direct line (Pythagore) to the home
+			int x_home = this.queen.x ;
+			int y_home = this.queen.y;
+			int delta_x = x_home - this.x ;
+			int delta_y = y_home - this.y;
+			double delta_x_sqr = delta_x*delta_x;
+			double delta_y_sqr = delta_y*delta_y;
+			double sqrt_delta = delta_x_sqr-delta_y_sqr;
+			double length = Math.pow(sqrt_delta,1/2);
+
+		// Remove old worker position from the map
+		Case tile_old_worker;
+		tile_old_worker = this.queen.map.get_tile_with_coord(this.x,this.y);
+		tile_old_worker.unset_worker();
+
 
 		this.x = (int) (this.x + delta_x/length);
 		this.y = (int) (this.y + delta_y/length);
+
+		// Update worker position on the map
+		Case tile_worker;
+		tile_worker = this.queen.map.get_tile_with_coord(this.x,this.y);
+		tile_worker.set_worker();
 		}
 	@Override
 	public void update(Observable arg0, Object arg1) {
@@ -112,22 +125,37 @@ public class Worker extends Ant implements Observer {
 		   System.out.println("Worker MOVE"+this.resources);
 		   //System.out.println("Worker called"+"\n");
 
-		   //If the worker has not a full inventory (<5 resources it moves using move() method (ie the ant will move randomly(-1,0,+1)
+		   // If the worker has gathered resources , and the worker is at his anthill , drop the resources.
 
-		   if (this.resources<=5) {
+		   if (this.x == this.queen.x && this.y ==this.queen.y && this.resources>0)
+		   {
+			   this.queen.resources = this.queen.resources+ this.resources;
+			   this.resources = 0;
+			   return;
+		   }
+
+
+		   //If the worker has not a full inventory (<5 resources it moves using move() method (ie the ant will move x,y randomly(-1,0,+1)
+		   if (this.resources<5) {
 			   System.out.println("Worker MOVE"+"\n");
 			   this.move();
+			   return;
 		   }
 
 		   // If the worker has 5 or more resources it will go back home by taking a direct path using the
-		   else {
+		   if (this.resources>=5) {
 
 			   System.out.println("Worker HOME"+"\n");
 			   this.go_back_home();
+			   return;
 		   }
 
 
-		   // If the worker has gathered resources , it will go back to the anthill to drop the resources.
+
+
+
+
+
 
 	   }
 }

@@ -82,6 +82,7 @@ public class Map {
 		}
 
 
+        // Method to draw in console
 public synchronized  void draw()
 {
     int i = 0;
@@ -152,6 +153,7 @@ public void draw_graphic(GraphicsContext gc) throws FileNotFoundException {
         }
         Image anthill_tile = new Image(anthill_tile_file);
         gc.drawImage(anthill_tile, 25 * 30, 50+separator, 30, 30);
+        gc.fillText(String.valueOf(anthill.resources),25 * 30 + 40,50+separator + 15);
         separator= separator+200;
     }
 }

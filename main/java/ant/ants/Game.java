@@ -11,17 +11,12 @@ import java.io.FileNotFoundException;
 
 public class Game extends Application{
 
-    protected Map map;
+    private Map map;
     public static void main(String[] args)
     {
-        //Map.setNbTile(5, 5);
 
         Game game = new Game();
 
-        // Map.shared().consoleDraw();
-
-
-        // Master.shared().startGame();
 
         launch(Game.class, args);
     }
@@ -39,7 +34,7 @@ public class Game extends Application{
         root.getChildren().add( canvas );
 
         map = new Map();
-       map.create_map();
+        map.create_map();
         map.add_anthill();
         new AnimationTimer()
         {
@@ -56,7 +51,7 @@ public class Game extends Application{
                     throw new RuntimeException(e);
                 }
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(20);
                 } catch (InterruptedException e) { }
             }
         }.start();

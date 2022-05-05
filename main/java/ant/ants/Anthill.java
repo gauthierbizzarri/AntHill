@@ -102,7 +102,7 @@ public class Anthill extends Thread {
 					worker.thread.start();
 
 					try {
-						Thread.sleep(1500);
+						Thread.sleep(1200);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
 					}
