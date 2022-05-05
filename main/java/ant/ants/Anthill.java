@@ -10,6 +10,7 @@ public class Anthill extends Thread {
 	int y;
 	String color;
 
+	int order ;
 	int resources;
 
 	// Content is a list of all content in the tile , due to the fact that a tile may contain more than 1 ant
@@ -22,7 +23,6 @@ public class Anthill extends Thread {
 	protected ArrayList<Officer> officers;
 
 	protected Thread thread;
-	private OrderQueen order;
 
 	// public ArrayList <OrderQueen> queenorders;
 
@@ -35,6 +35,7 @@ public class Anthill extends Thread {
 		this.y = y;
 		this.map = map;
 		this.color = color;
+		this.order = 1;
 		// Create List of All officers and  
 		officers = new ArrayList<Officer>();
 
@@ -87,7 +88,7 @@ public class Anthill extends Thread {
 			for (Officer officer : officers) {
 
 				publisher.subscribe(officer);
-				int order = 0;
+				int order = this.order;
 				int MAX_SECONDS_TO_KEEP_IT_WHEN_NO_SPACE = 2;
 				final int lag = publisher.offer(
 						order,
@@ -106,7 +107,7 @@ public class Anthill extends Thread {
 					officer.thread.start();
 
 					try {
-						Thread.sleep(20);
+						Thread.sleep(150);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
 					}
@@ -115,13 +116,14 @@ public class Anthill extends Thread {
 			}
 			for (Worker worker : workers) {
 
+
 				//publisher.subscribe(worker);
 				if ((worker.thread == null) || (!worker.thread.isAlive())) {
 					worker.thread = new Thread(worker);
 					worker.thread.start();
 
 					try {
-						Thread.sleep(20);
+						Thread.sleep(150);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
 					}
@@ -132,5 +134,10 @@ public class Anthill extends Thread {
 		}
 
 
+	}
+	public void set_order(int order)
+	{
+		System.out.println("ORDER CHANGED ");
+		this.order = order;
 	}
 }

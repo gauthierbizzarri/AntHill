@@ -3,21 +3,24 @@ package ant.ants;
 import java.util.Observable;
 import java.util.Observer;
 import java.lang.Math;
-
+import java.util.concurrent.Flow;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Worker extends Ant implements Observer {
+public class Worker extends Ant implements Flow.Subscriber<Integer> {
 
 	// The worker knows to which anthill she belongs to
 	protected Anthill queen;
 
 	// The worker knows to which officer she belongs to
 	protected Officer officer;
+	private Flow.Subscription subscription;
 
 
 	// The resources' var represents the amount of gathered resources ( it will be reset to 0 when the worker will drop it in the anthill)
 
 	private int resources;
+
+	private final String subscriberName;
 
 	// Constructor 
 	 public Worker(Anthill queen , int id)
@@ -27,7 +30,7 @@ public class Worker extends Ant implements Observer {
 	        this.y = this.queen.y;
 	        this.id = id;
 			this.resources = 0;
-
+			this.subscriberName = "String.valueOf(this.officer.id)";
 	        this.thread = new Thread();
 			this.color = this.queen.color;
 	    }
@@ -122,13 +125,10 @@ public class Worker extends Ant implements Observer {
 		tile_worker.set_worker();
 			tile_old_worker.set_color(this.color);
 		}
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		
-	}
+
 
 	   public void run(){
-		   System.out.println("Worker MOVE"+this.resources);
+		   // System.out.println("Worker MOVE"+this.resources);
 		   //System.out.println("Worker called"+"\n");
 
 		   // If the worker has gathered resources , and the worker is at his anthill , drop the resources.
@@ -165,4 +165,43 @@ public class Worker extends Ant implements Observer {
 
 
 	   }
+
+	@Override
+	public void onSubscribe(Flow.Subscription subscription) {
+		this.subscription = subscription;
+		subscription.request(1);
+
+	}
+
+	@Override
+	// order 0 : go home , order 1 : collect resources
+	public void onNext(final Integer order) {
+		if (order == 0) {
+			System.out.println("WE LL  gather resources");
+		}
+		if (order == 1) {
+			System.out.println("I ll go home ");
+		}
+		try {
+			this.thread.sleep(150);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+
+	@Override
+	public void onError(Throwable throwable) {
+
+		System.out.println("ERROR OCCURED"+throwable);
+	}
+
+	@Override
+	public void onComplete() {
+		System.out.println("ORDER PASSED");
+
+	}
+	public String getSubscriberName() {
+		return "subscriberName";
+	}
 }

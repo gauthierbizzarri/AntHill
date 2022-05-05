@@ -27,7 +27,7 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
 
 		this.thread = new Thread(this);
         this.color = this.queen.color ;
-        this.subscriberName = "";
+        this.subscriberName = String.valueOf(this.queen.id);
         // 
        
         
@@ -78,9 +78,7 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
     }
       
     public void run(){
-        System.out.println(
-            "Officer" + this.id+" de anthill "+this.queen.id+" called"+"\n"
-            );
+        // System.out.println("Officer" + this.id+" de anthill "+this.queen.id+" called"+"\n");
         this.move();
         ;
 
@@ -126,3 +124,22 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
         return subscriberName;
     }
 }
+
+/*
+
+				publisher.subscribe(worker);
+				int order = 0;
+				int MAX_SECONDS_TO_KEEP_IT_WHEN_NO_SPACE = 2;
+				final int lag = publisher.offer(
+						order,
+						MAX_SECONDS_TO_KEEP_IT_WHEN_NO_SPACE,
+						TimeUnit.SECONDS,
+						(subscriber, msg) -> {
+							subscriber.onError(
+									new RuntimeException("Hey " + ((Worker) subscriber)
+											.getSubscriberName() + "! You are too slow getting orders" +
+											" and we don't have more space for them! " +
+											"I'll drop your order: " + msg));
+							return false; // don't retry, we don't believe in second opportunities
+						});
+ */
