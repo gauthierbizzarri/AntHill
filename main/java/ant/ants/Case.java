@@ -22,12 +22,30 @@ public class Case {
 	boolean is_worker = false;
 	boolean is_officer = false;
 	String color= "";
-	
+
+	// IMAGES
+	Image grass_tile;
+
 	Case(int x, int y , int ressource){
         this.x = x;
         this.y = y;
         this.ressources = ressource;
 		this.color = "";
+
+
+
+		FileInputStream gras_tile_file = null;
+		try {
+			gras_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/grass_alt1.png");
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+		Image grass_tile = new Image(gras_tile_file);
+
+
+		this.grass_tile= grass_tile;
+
+
 
         
     }
@@ -65,14 +83,8 @@ public class Case {
 		gc.setStroke(Color.BLACK);
 		gc.strokeRect(this.x * 30, this.y * 30, 30, 30);
 		// Draw grass Tile
-		FileInputStream gras_tile_file = null;
-		try {
-			gras_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/grass_alt1.png");
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-		Image grass_tile = new Image(gras_tile_file);
-		gc.drawImage(grass_tile, this.x * 30, this.y * 30, 30, 30);
+
+		gc.drawImage(this.grass_tile, this.x * 30, this.y * 30, 30, 30);
 
 		// Draw the amount of resources in the tile as a yellow circle of variable radius : radius(resources) = 4/10 * resources
 

@@ -150,7 +150,6 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 			 // If the worker has 5 or more resources it will go back home by taking a direct path using the
 			 if (this.resources >= 5) {
 
-				 System.out.println("Worker HOME" + "\n");
 				 this.go_back_home();
 			 }
 			 try {

@@ -86,7 +86,7 @@ public class Anthill extends Thread {
 	public void run() {
 		// While true to not stop drawing
 		while (true) {
-			/*
+
 			final SubmissionPublisher<Integer> publisher =
 					new SubmissionPublisher<>(ForkJoinPool.commonPool(), 20);
 
@@ -108,45 +108,26 @@ public class Anthill extends Thread {
 											"I'll drop your order: " + msg));
 							return false; // don't retry, we don't believe in second opportunities
 						});
+				/*
 				if ((officer.thread == null) || (!officer.thread.isAlive())) {
 					officer.thread = new Thread(officer);
 					officer.thread.start();
 
+				*/
+
 					try {
-						Thread.sleep(600);
+						Thread.sleep(10);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
 					}
 
 				}
-			}
-			for (Worker worker : workers) {
-
-
-				//publisher.subscribe(worker);
-				if ((worker.thread == null) || (!worker.thread.isAlive())) {
-					worker.thread = new Thread(worker);
-					worker.thread.start();
-
-					try {
-						Thread.sleep(600);
-					} catch (InterruptedException e) {
-						throw new RuntimeException(e);
-					}
-				}
-			}
-
-			 */
-			try {
-				thread.sleep(10);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
 			}
 
 		}
 
 
-	}
+
 	public void set_order(int order)
 	{
 		System.out.println("ORDER CHANGED ");
