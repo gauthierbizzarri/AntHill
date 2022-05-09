@@ -93,7 +93,6 @@ public class Case {
 		gc.setLineWidth(2);
 		gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4*this.ressources/10,4*this.ressources/10);
 
-		gc.setStroke(Color.TRANSPARENT);
 
 		// Drawing the anthill
 
@@ -107,10 +106,11 @@ public class Case {
 				Image anthill_tile = new Image(anthill_tile_file);
 				gc.drawImage(anthill_tile, this.x * 30, this.y * 30, 30, 30);
 
-			if(this.color =="Red"){gc.setStroke(Color.RED);}
-			if(this.color =="Green"){gc.setStroke(Color.GREEN);}
-			if(this.color =="Blue"){gc.setStroke(Color.BLUE);}
-			gc.setLineWidth(7);
+				if(this.color.equals("Red")){gc.setStroke(Color.RED);}
+				if(this.color.equals("Green")){gc.setStroke(Color.GREEN);}
+				if(this.color.equals("Blue")){gc.setStroke(Color.BLUE);}
+				gc.setLineWidth(7);
+
 			gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4,4);
 
 
@@ -131,9 +131,9 @@ public class Case {
 				}
 				Image officer_tile = new Image(officer_tile_file);
 				gc.drawImage(officer_tile, this.x * 30, this.y * 30, 25, 25);
-				if(this.color =="Red"){gc.setStroke(Color.RED);}
-				if(this.color =="Green"){gc.setStroke(Color.GREEN);}
-				if(this.color =="Blue"){gc.setStroke(Color.BLUE);}
+				if(this.color.equals("Red")){gc.setStroke(Color.RED);}
+				if(this.color.equals("Green")){gc.setStroke(Color.GREEN);}
+				if(this.color.equals("Blue")){gc.setStroke(Color.BLUE);}
 
 
 				gc.setLineWidth(7);
@@ -157,9 +157,9 @@ public class Case {
 				}
 				Image ant_tile = new Image(ant_tile_file);
 				gc.drawImage(ant_tile, this.x * 30, this.y * 30, 20, 20);
-				if(this.color =="Red"){gc.setStroke(Color.RED);}
-				if(this.color =="Green"){gc.setStroke(Color.GREEN);}
-				if(this.color =="Blue"){gc.setStroke(Color.BLUE);}
+				if(this.color.equals("Red")){gc.setStroke(Color.RED);}
+				if(this.color.equals("Green")){gc.setStroke(Color.GREEN);}
+				if(this.color.equals("Blue")){gc.setStroke(Color.BLUE);}
 
 
 				gc.setLineWidth(7);

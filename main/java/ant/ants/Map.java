@@ -77,6 +77,7 @@ public class Map {
             random_case.set_color(colors[x]);
 
 	      // Creating a Anthill and setting up to the case position
+        System.out.println(colors[x]);
 	      Anthill anthill = new Anthill(x,random_case.x,random_case.y,this,colors[x]);
 	      // Adding it to the Anthill list of the map
 	      this.anthills.add(anthill);
@@ -169,8 +170,7 @@ public void draw_graphic(GraphicsContext gc) throws FileNotFoundException {
         gc.drawImage(anthill_tile, 25 * 30, 50+separator, 30, 30);
         gc.fillText(String.valueOf(anthill.resources),25 * 30 + 40,50+separator + 15);
 
-        // Drawing the color of the anthill on the score board
-        System.out.println(anthill.color);
+        
         if(anthill.color =="Red"){gc.setStroke(Color.RED);}
         if(anthill.color =="Green"){gc.setStroke(Color.GREEN);}
         if(anthill.color =="Blue"){gc.setStroke(Color.BLUE);}

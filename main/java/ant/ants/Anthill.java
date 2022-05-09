@@ -48,6 +48,7 @@ public class Anthill extends Thread {
 
 			Officer officer = new Officer(this, i);
 			officers.add(officer);
+			officer.start();
 
 			// Adding the officer to the map , the officer will be displayed at the anthill position
 			Case tile_officer;
@@ -72,6 +73,7 @@ public class Anthill extends Thread {
 			Worker worker = new Worker(this, i);
 			workers.add(worker);
 			worker.start();
+			// Updating position of the ant to the map
 			Case tile_worker;
 			tile_worker = this.map.get_tile_with_coord(this.x, this.y);
 			tile_worker.set_worker();
@@ -93,6 +95,7 @@ public class Anthill extends Thread {
 
 			for (Officer officer : officers) {
 
+				// SENDING ORDERS TO ALL OFFICERS
 				publisher.subscribe(officer);
 				int order = this.order;
 				int MAX_SECONDS_TO_KEEP_IT_WHEN_NO_SPACE = 2;
@@ -105,7 +108,7 @@ public class Anthill extends Thread {
 									new RuntimeException("Hey " + ((Officer) subscriber)
 											.getSubscriberName() + "! You are too slow getting orders" +
 											" and we don't have more space for them! " +
-											"I'll drop your order: " + msg));
+											" : " + msg));
 							return false; // don't retry, we don't believe in second opportunities
 						});
 				/*
@@ -116,7 +119,7 @@ public class Anthill extends Thread {
 				*/
 
 					try {
-						Thread.sleep(10);
+						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
 					}

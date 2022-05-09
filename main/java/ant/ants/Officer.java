@@ -107,24 +107,32 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
     }
       
     public void run(){
-        if (this.must_ho_home){this.go_back_home();}
+        while(true) {
+            System.out.println("move" + this.x + this.y);
+            if (this.must_ho_home) {
+                this.go_back_home();
+            }
 
-        if(this.must_ho_home && this.x == this.queen.x && this.y == this.queen.y){ this.stop = true;
+            if (this.must_ho_home && this.x == this.queen.x && this.y == this.queen.y) {
+                this.stop = true;
+            }
+            if (this.stop == true) {
+                System.out.println("has stopeed");
+            }
+
+
+            if (this.stop == false){
+
+                this.move();
+            }
+            // System.out.println("Officer" + this.id+" de anthill "+this.queen.id+" called"+"\n");
+            try {
+                System.out.println("Officer stop");
+                thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
-        if (this.stop == true){
-            System.out.println("has stopeed");
-        }
-
-
-        // System.out.println("Officer" + this.id+" de anthill "+this.queen.id+" called"+"\n");
-        this.move();
-        try {
-            System.out.println("Officer stop");
-            thread.sleep(50);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
 
     }
 
@@ -140,7 +148,7 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
     // order 0 : go home , order 1 : collect resources
     public void onNext(final Integer order) {
         if (order == 0) {
-            System.out.println("GO HOME ");
+            System.out.println("GO HOME "+ this.color);
             this.must_ho_home = true;
         }
         if (order == 1) {
