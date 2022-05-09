@@ -49,9 +49,13 @@ public class Anthill extends Thread {
 			Officer officer = new Officer(this, i);
 			officers.add(officer);
 
+			// Adding the officer to the map , the officer will be displayed at the anthill position
 			Case tile_officer;
 			tile_officer = this.map.get_tile_with_coord(this.x, this.y);
 			tile_officer.set_officer();
+
+
+
 		}
 
 
@@ -63,10 +67,11 @@ public class Anthill extends Thread {
 
 		workers = new ArrayList<Worker>();
 
-		for (int i = 0; i < 0; i++) {
+		for (int i = 0; i < 5; i++) {
 
 			Worker worker = new Worker(this, i);
 			workers.add(worker);
+			worker.start();
 			Case tile_worker;
 			tile_worker = this.map.get_tile_with_coord(this.x, this.y);
 			tile_worker.set_worker();
@@ -81,6 +86,7 @@ public class Anthill extends Thread {
 	public void run() {
 		// While true to not stop drawing
 		while (true) {
+			/*
 			final SubmissionPublisher<Integer> publisher =
 					new SubmissionPublisher<>(ForkJoinPool.commonPool(), 20);
 
@@ -130,6 +136,12 @@ public class Anthill extends Thread {
 				}
 			}
 
+			 */
+			try {
+				thread.sleep(10);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
 
 		}
 

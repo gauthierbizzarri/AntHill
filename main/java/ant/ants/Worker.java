@@ -128,34 +128,37 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 
 
 	   public void run(){
-		   // System.out.println("Worker MOVE"+this.resources);
-		   //System.out.println("Worker called"+"\n");
+		 while(true) {
+			 // System.out.println("Worker MOVE"+this.resources);
+			 //System.out.println("Worker called"+"\n");
 
-		   // If the worker has gathered resources , and the worker is at his anthill , drop the resources.
-
-
-		   if (this.x == this.queen.x && this.y ==this.queen.y && this.resources>0)
-		   {
-			   this.queen.resources = this.queen.resources+ this.resources;
-			   this.resources = 0;
-			   return;
-		   }
+			 // If the worker has gathered resources , and the worker is at his anthill , drop the resources.
 
 
-		   //If the worker has not a full inventory (<5 resources it moves using move() method (ie the ant will move x,y randomly(-1,0,+1)
-		   if (this.resources<5) {
-			   System.out.println("Worker MOVE"+"\n");
-			   this.move();
-			   return;
-		   }
+			 if (this.x == this.queen.x && this.y == this.queen.y && this.resources > 0) {
+				 this.queen.resources = this.queen.resources + this.resources;
+				 this.resources = 0;
+			 }
 
-		   // If the worker has 5 or more resources it will go back home by taking a direct path using the
-		   if (this.resources>=5) {
 
-			   System.out.println("Worker HOME"+"\n");
-			   this.go_back_home();
-			   return;
-		   }
+			 //If the worker has not a full inventory (<5 resources it moves using move() method (ie the ant will move x,y randomly(-1,0,+1)
+			 if (this.resources < 5) {
+				 //System.out.println("Worker MOVE" + "\n");
+				 this.move();
+			 }
+
+			 // If the worker has 5 or more resources it will go back home by taking a direct path using the
+			 if (this.resources >= 5) {
+
+				 System.out.println("Worker HOME" + "\n");
+				 this.go_back_home();
+			 }
+			 try {
+				 thread.sleep(50);
+			 } catch (InterruptedException e) {
+				 throw new RuntimeException(e);
+			 }
+		 }
 
 
 
