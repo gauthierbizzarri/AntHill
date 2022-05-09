@@ -107,7 +107,7 @@ public class Anthill extends Thread {
 					officer.thread.start();
 
 					try {
-						Thread.sleep(150);
+						Thread.sleep(600);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
 					}
@@ -123,7 +123,7 @@ public class Anthill extends Thread {
 					worker.thread.start();
 
 					try {
-						Thread.sleep(150);
+						Thread.sleep(600);
 					} catch (InterruptedException e) {
 						throw new RuntimeException(e);
 					}

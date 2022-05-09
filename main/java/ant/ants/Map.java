@@ -11,7 +11,16 @@ import java.util.ArrayList;
 
 
 
+// Singleton class
 public class Map {
+    private static class LoadMap {
+        static final Map INSTANCE = new Map();
+    }
+    protected Map() {}
+
+    public static Map getInstance() {
+        return LoadMap.INSTANCE;
+    }
 	
 	
 	
@@ -50,7 +59,7 @@ public class Map {
 		anthills = new ArrayList <Anthill>();
 		String[] colors = {"Red","Green","Blue"};
 		// Create 3 anthill on a random position , set it in a Case and in the Anthill list
-	for (int x = 0;x<1;x++)
+	for (int x = 0;x<3;x++)
 	{
 		// Setting a random position of the anthill
 		Random rand = new Random(); //instance of random class
