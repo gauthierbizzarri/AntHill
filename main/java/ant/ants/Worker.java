@@ -1,10 +1,11 @@
 package ant.ants;
 
-import java.util.Observable;
-import java.util.Observer;
+import java.util.ArrayList;
 import java.lang.Math;
 import java.util.concurrent.Flow;
 import java.util.concurrent.ThreadLocalRandom;
+
+import java.util.Collections;
 
 public class Worker extends Ant implements Flow.Subscriber<Integer> {
 
@@ -18,7 +19,7 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 
 	// The resources' var represents the amount of gathered resources ( it will be reset to 0 when the worker will drop it in the anthill)
 
-	private int resources;
+	protected ArrayList<Resource> ressouces;
 
 	private final String subscriberName;
 
@@ -31,7 +32,7 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 	        this.id = id;
 			this.stop = false;
 			this.officer = officer;
-			this.resources = 0;
+			this.ressouces = new ArrayList<>();
 			this.subscriberName = String.valueOf(this.officer.id);
 	        this.thread = new Thread(this);
 			this.color = this.queen.color;
@@ -83,21 +84,13 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 			// Setting the color
 		 	tile_worker.set_color(this.color);
 
+			 ////////////////////////////////////////////////////////////////////////////////////////
+		     ///////////////////////         RESOURCE HANDLER     //////////////////////////////////
+		     /////////////////////////////////////////////////////////////////////////////////////
 
-			// Check if there are resources on this tile .
-		 if(tile_worker.ressources>0)
-		 {
-			 // A worker can gather a maximum of 5 resources
-			 if (tile_worker.ressources<=5){
-				 tile_worker.ressources=0;
-				 this.resources =tile_worker.ressources;
-			 }
-			 if (tile_worker.ressources>5)
-			 {
-				 tile_worker.ressources = tile_worker.ressources-5;
-				 this.resources = 5;
-			 }
-		 }
+		 Resource current_resource = tile_worker.getFirstResource();
+		 tile_worker.removeResource(current_resource);
+		 this.ressouces.add(current_resource);
 	    }
 
 
@@ -125,13 +118,14 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 		// Update worker position on the map
 		Case tile_worker;
 		tile_worker = this.queen.map.get_tile_with_coord(this.x,this.y);
-		tile_worker.set_officer();
+		tile_worker.set_worker();
 		tile_worker.set_color(this.color);
 	}
 
 
 	public void run(){
 		 while(true) {
+
 			 // Worker has to stop , the order of going home has passed and the worker is at his anthill
 			 if (this.stop == true) {
 				 break;
@@ -139,7 +133,7 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 
 
 			 // If the worker has gathered resources or has received the order to go home , the worker go home
-			 if (this.must_ho_home==true || this.resources >= 5) {
+			 if (this.must_ho_home==true || this.ressouces.size() >= 5) {
 				 this.go_back_home();
 			 }
 
@@ -149,22 +143,25 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 			 }
 
 
+
 			 // IF the worker has resources and is at his anthill , the worker will drop resources in the anthill
-			 if (this.x == this.queen.x && this.y == this.queen.y && this.resources > 0) {
-				 this.queen.resources = this.queen.resources + this.resources;
-				 this.resources = 0;
+			 if (this.x == this.queen.x && this.y == this.queen.y && this.ressouces.size() > 0) {
+				 this.queen.resources.addAll(this.ressouces);
+				 this.ressouces = new ArrayList<>() ;
 			 }
 
 
+
+
 			 //If the worker has not a full inventory (<5 resources it moves using move() method (ie the ant will move x,y randomly(-1,0,+1)
-			 if (this.resources < 5 &&this.stop==false) {
+			 if (this.stop==false && this.ressouces.size() < 5) {
 				 //System.out.println("Worker MOVE" + "\n");
 				 this.move();
 			 }
 
-			 // 50 ms beetwen each action
+			 // 50 ms between each action
 			 try {
-				 thread.sleep(50);
+				 thread.sleep(200);
 			 } catch (InterruptedException e) {
 				 throw new RuntimeException(e);
 			 }

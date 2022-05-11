@@ -11,7 +11,7 @@ public class Anthill extends Thread {
 	String color;
 
 	int order ;
-	int resources;
+	protected ArrayList<Resource> resources;
 
 	// Content is a list of all content in the tile , due to the fact that a tile may contain more than 1 ant
 	public ArrayList <String> content;
@@ -27,23 +27,16 @@ public class Anthill extends Thread {
 	// public ArrayList <OrderQueen> queenorders;
 
 	Anthill(int id, int x, int y, Map map, String color) {
-
-
-		// order = new OrderQueen();
 		this.id = id;
 		this.x = x;
 		this.y = y;
 		this.map = map;
 		this.color = color;
 		this.order = 1;
-		// Create List of All officers and  
+		this.resources = new ArrayList<>();
 		officers = new ArrayList<Officer>();
 
-
-		// Create 3 officers
-
-		officers = new ArrayList<Officer>();
-
+		// INIT OFFICERS
 		for (int i = 0; i <1 ; i++) {
 
 			Officer officer = new Officer(this, i);
@@ -56,7 +49,7 @@ public class Anthill extends Thread {
 			tile_officer.set_officer();
 
 
-			// Create 5 workers
+			// CREATE WORKERS WHO BELONGS TO THE OFFICER
 
 			workers = new ArrayList<Worker>();
 
@@ -71,21 +64,14 @@ public class Anthill extends Thread {
 				tile_worker.set_worker();
 			}
 
-
-
 		}
-
-
-
-
-
-
-
-
-
+		// START THREAD
 		this.thread = new Thread(this);
 		this.thread.start();
 
+	}
+	public void addRessouce(Resource r){
+		this.resources.add(r);
 	}
 
 	public void run() {

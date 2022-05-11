@@ -49,7 +49,7 @@ public class Map {
                 int upperbound = 50;
                 //generate random value
                 int random_resources = rand.nextInt(upperbound);
-                Case case_created = new Case(i, j,random_resources);
+                Case case_created = new Case(i, j);
                 this.tiles.add(case_created);
             }
 
@@ -167,7 +167,7 @@ public void draw_graphic(GraphicsContext gc) throws FileNotFoundException {
         }
         Image anthill_tile = new Image(anthill_tile_file);
         gc.drawImage(anthill_tile, 25 * 30, 50+separator, 30, 30);
-        gc.fillText(String.valueOf(anthill.resources),25 * 30 + 40,50+separator + 15);
+        gc.fillText(String.valueOf(anthill.resources.size()),25 * 30 + 40,50+separator + 15);
 
         
         if(anthill.color =="Red"){gc.setStroke(Color.RED);}

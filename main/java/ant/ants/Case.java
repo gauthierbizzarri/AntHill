@@ -11,25 +11,32 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Case {
 	// Position of the case 
 	int x ;
 	int y ;
-	int ressources ;
+	ArrayList<Resource> resources;
 
 	boolean is_anthill = false;
 	boolean is_worker = false;
 	boolean is_officer = false;
 	String color= "";
 
+	final Object lock = new Object();
+
 	// IMAGES
 	Image grass_tile;
 
-	Case(int x, int y , int ressource){
+	Case(int x, int y){
         this.x = x;
         this.y = y;
-        this.ressources = ressource;
+		resources = new ArrayList<>();
+		for (int k = 0; k < ThreadLocalRandom.current().nextInt(0, 50); k++) {
+			Resource resource = new Resource(ResourceType.FOOD);
+			resources.add(resource);
+		}
 		this.color = "";
 
 
@@ -52,7 +59,6 @@ public class Case {
 
 	public void  set_anthill ( ) {
 		this.is_anthill = true;
-		this.ressources = 0;
 	}
 	
 	public void  set_worker () {
@@ -93,7 +99,8 @@ public class Case {
 		gc.setStroke(Color.YELLOW);
 
 		gc.setLineWidth(2);
-		gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4*this.ressources/10,4*this.ressources/10);
+
+		gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4*getResources().size()/10,4*getResources().size()/10);
 		gc.setStroke(Color.TRANSPARENT);
 
 
@@ -125,6 +132,8 @@ public class Case {
 				gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4,4);
 			}
 
+			// DRAWING IMAGE OF THE ANTHILL
+
 		if (this.is_anthill) {
 			FileInputStream anthill_tile_file = null;
 			try {
@@ -135,7 +144,8 @@ public class Case {
 			Image anthill_tile = new Image(anthill_tile_file);
 			gc.drawImage(anthill_tile, this.x * 30, this.y * 30, 30, 30);
 
-			System.out.println(this.color);
+
+			// DRAWING COLOR OF THE ANTHILL AS A DOT CENTERED ON IT
 			if(this.color.equals("Red")){gc.setStroke(Color.RED);}
 			if(this.color.equals("Green")){gc.setStroke(Color.GREEN);}
 			if(this.color.equals("Blue")){gc.setStroke(Color.BLUE);}
@@ -145,13 +155,6 @@ public class Case {
 		}
 
 			if (this.is_worker) {
-				// Draw a blue circle to represents worker
-			/*
-			gc.setLineWidth(7);
-			gc.setStroke(Color.BLUE);
-			gc.strokeOval(this.x*30 +30/2 ,this.y*30 + 30/2 ,1,1);
-
-			 */
 
 				// Draw worker image
 				FileInputStream ant_tile_file = null;
@@ -176,12 +179,30 @@ public class Case {
 
 		}
 
-	public void drawBackground (GraphicsContext gc)  {
 
 
+	public ArrayList<Resource> getResources() {
+		return resources;
+	}
 
+	public void setResources(ArrayList<Resource> resources) {
+		this.resources = resources;
+	}
 
+	public Resource getFirstResource(){
+		synchronized(lock){
+			if(!resources.isEmpty())
+				return resources.get(0);
+			else
+				return null;
+		}
+	}
 
+	public   void  removeResource(Resource myResource) {
+		synchronized(lock){
+			if(!resources.isEmpty())
+				resources.remove(myResource);
+		}
 	}
 
 
