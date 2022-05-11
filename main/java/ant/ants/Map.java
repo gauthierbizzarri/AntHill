@@ -158,7 +158,11 @@ public void draw_graphic(GraphicsContext gc) throws FileNotFoundException {
     // We will print the score(the amount of gathered resources & the content of the hill (number of Workers & Officers)
 
     int separator = 0;
+
+
+
     for (Anthill anthill : this.anthills) {
+        // LOAD ANTHILL IMAGE
         FileInputStream anthill_tile_file = null;
         try {
             anthill_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/red_anthill.png");
@@ -166,9 +170,25 @@ public void draw_graphic(GraphicsContext gc) throws FileNotFoundException {
             throw new RuntimeException(e);
         }
         Image anthill_tile = new Image(anthill_tile_file);
+
+        // DRAW ANTHILL IMAGE
         gc.drawImage(anthill_tile, 25 * 30, 50+separator, 30, 30);
+
+        // LOAD FOOD IMAGE
+        FileInputStream food_file = null;
+        try {
+            food_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/food.png");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        Image food_tile = new Image(food_file);
+
+        gc.drawImage(food_tile, 25 *30 +65, 50+separator+25, 20, 20);
+        // DISPLAY POINTS VALUE
         gc.fillText(String.valueOf(anthill.resources.size()),25 * 30 + 40,50+separator + 15);
 
+        /// DISPLAY FOOD VALUE
+        gc.fillText(String.valueOf(anthill.resources.size()/3),25 * 30 + 40,50+separator + 40);
         
         if(anthill.color =="Red"){gc.setStroke(Color.RED);}
         if(anthill.color =="Green"){gc.setStroke(Color.GREEN);}
