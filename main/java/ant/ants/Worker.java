@@ -23,16 +23,19 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 	private final String subscriberName;
 
 	// Constructor 
-	 public Worker(Anthill queen , int id)
+	 public Worker(Anthill queen , int id,Officer officer)
 	    {
 	        this.queen = queen;
 	        this.x = this.queen.x;
 	        this.y = this.queen.y;
 	        this.id = id;
+			this.stop = false;
+			this.officer = officer;
 			this.resources = 0;
-			this.subscriberName = "String.valueOf(this.officer.id)";
-	        this.thread = new Thread();
+			this.subscriberName = String.valueOf(this.officer.id);
+	        this.thread = new Thread(this);
 			this.color = this.queen.color;
+			this.must_ho_home = false;
 	    }
 	 
 	 public void move() {
@@ -98,16 +101,16 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 	    }
 
 
-		public void go_back_home(){
-		 // Drawing a direct line (Pythagore) to the home
-			int x_home = this.queen.x ;
-			int y_home = this.queen.y;
-			int delta_x = x_home - this.x ;
-			int delta_y = y_home - this.y;
-			double delta_x_sqr = delta_x*delta_x;
-			double delta_y_sqr = delta_y*delta_y;
-			double sqrt_delta = delta_x_sqr-delta_y_sqr;
-			double length = Math.pow(sqrt_delta,1/2);
+	public void go_back_home(){
+		// Drawing a direct line (Pythagore) to the home
+		int x_home = this.queen.x ;
+		int y_home = this.queen.y;
+		int delta_x = x_home - this.x ;
+		int delta_y = y_home - this.y;
+		double delta_x_sqr = delta_x*delta_x;
+		double delta_y_sqr = delta_y*delta_y;
+		double sqrt_delta = delta_x_sqr-delta_y_sqr;
+		double length = Math.pow(sqrt_delta,1/2);
 
 		// Remove old worker position from the map
 		Case tile_old_worker;
@@ -122,18 +125,33 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 		// Update worker position on the map
 		Case tile_worker;
 		tile_worker = this.queen.map.get_tile_with_coord(this.x,this.y);
-		tile_worker.set_worker();
-			tile_old_worker.set_color(this.color);
-		}
+		tile_worker.set_officer();
+		tile_worker.set_color(this.color);
+	}
 
 
-	   public void run(){
+	public void run(){
 		 while(true) {
+			 if (this.stop == true) {
+				 System.out.println(" WORKER "+this.color+" stoped");
+				 break;
+			 }
+
 			 // System.out.println("Worker MOVE"+this.resources);
 			 //System.out.println("Worker called"+"\n");
 
 			 // If the worker has gathered resources , and the worker is at his anthill , drop the resources.
 
+
+			 if (this.must_ho_home==true || this.resources >= 5) {
+				 this.go_back_home();
+			 }
+			 if (this.must_ho_home==true && this.x == this.queen.x && this.y == this.queen.y) {
+				 this.stop = true;
+			 }
+			 if (this.stop == true) {
+				 System.out.println(" WORKER "+this.color+" stoped");
+			 }
 
 			 if (this.x == this.queen.x && this.y == this.queen.y && this.resources > 0) {
 				 this.queen.resources = this.queen.resources + this.resources;
@@ -142,18 +160,17 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 
 
 			 //If the worker has not a full inventory (<5 resources it moves using move() method (ie the ant will move x,y randomly(-1,0,+1)
-			 if (this.resources < 5) {
+			 if (this.resources < 5 &&this.stop==false) {
 				 //System.out.println("Worker MOVE" + "\n");
 				 this.move();
 			 }
 
 			 // If the worker has 5 or more resources it will go back home by taking a direct path using the
-			 if (this.resources >= 5) {
 
-				 this.go_back_home();
-			 }
+
+
 			 try {
-				 thread.sleep(50);
+				 thread.sleep(100);
 			 } catch (InterruptedException e) {
 				 throw new RuntimeException(e);
 			 }
@@ -175,14 +192,17 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 
 	}
 
+
 	@Override
 	// order 0 : go home , order 1 : collect resources
 	public void onNext(final Integer order) {
+
 		if (order == 0) {
-			System.out.println("WE LL  gather resources");
+			System.out.println(" WORKER GO HOME "+ this.color);
+			this.must_ho_home = true;
 		}
 		if (order == 1) {
-			System.out.println("I ll go home ");
+			//System.out.println("...");
 		}
 		try {
 			this.thread.sleep(150);
@@ -204,6 +224,6 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 
 	}
 	public String getSubscriberName() {
-		return "subscriberName";
+		return subscriberName;
 	}
 }

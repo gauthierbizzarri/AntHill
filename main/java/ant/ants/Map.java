@@ -77,7 +77,6 @@ public class Map {
             random_case.set_color(colors[x]);
 
 	      // Creating a Anthill and setting up to the case position
-        System.out.println(colors[x]);
 	      Anthill anthill = new Anthill(x,random_case.x,random_case.y,this,colors[x]);
 	      // Adding it to the Anthill list of the map
 	      this.anthills.add(anthill);

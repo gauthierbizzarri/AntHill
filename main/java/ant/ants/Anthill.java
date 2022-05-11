@@ -44,7 +44,7 @@ public class Anthill extends Thread {
 
 		officers = new ArrayList<Officer>();
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i <1 ; i++) {
 
 			Officer officer = new Officer(this, i);
 			officers.add(officer);
@@ -56,6 +56,22 @@ public class Anthill extends Thread {
 			tile_officer.set_officer();
 
 
+			// Create 5 workers
+
+			workers = new ArrayList<Worker>();
+
+			for (int j = 0; j < 1; j++) {
+
+				Worker worker = new Worker(this, j,officer);
+				workers.add(worker);
+				worker.start();
+				// Updating position of the ant to the map
+				Case tile_worker;
+				tile_worker = this.map.get_tile_with_coord(this.x, this.y);
+				tile_worker.set_worker();
+			}
+
+
 
 		}
 
@@ -64,20 +80,7 @@ public class Anthill extends Thread {
 
 
 
-		// Create 5 workers
 
-		workers = new ArrayList<Worker>();
-
-		for (int i = 0; i < 5; i++) {
-
-			Worker worker = new Worker(this, i);
-			workers.add(worker);
-			worker.start();
-			// Updating position of the ant to the map
-			Case tile_worker;
-			tile_worker = this.map.get_tile_with_coord(this.x, this.y);
-			tile_worker.set_worker();
-		}
 
 
 		this.thread = new Thread(this);
@@ -87,6 +90,10 @@ public class Anthill extends Thread {
 
 	public void run() {
 		// While true to not stop drawing
+
+		// IF NEW ORDER
+
+
 		while (true) {
 
 			final SubmissionPublisher<Integer> publisher =
@@ -118,16 +125,26 @@ public class Anthill extends Thread {
 
 				*/
 
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						throw new RuntimeException(e);
-					}
-
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
 				}
-			}
 
+			}
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
 		}
+	}
+
+
+
+
+
+
 
 
 

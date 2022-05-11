@@ -3,8 +3,7 @@ package ant.ants;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.Flow;
+import java.util.concurrent.*;
 import java.util.stream.IntStream;
 
 
@@ -24,7 +23,6 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
         this.y = this.queen.y;
         // Officer id 
         this.id = id;
-
         this.stop = false;
         this.must_ho_home = false;
 
@@ -106,9 +104,8 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
         tile_officer.set_color(this.color);
     }
       
-    public void run(){
-        while(true) {
-            System.out.println("move" + this.x + this.y);
+    public void run() {
+        while (true) {
             if (this.must_ho_home) {
                 this.go_back_home();
             }
@@ -117,23 +114,62 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
                 this.stop = true;
             }
             if (this.stop == true) {
-                System.out.println("has stopeed");
+                //System.out.println("has stopeed");
             }
 
 
-            if (this.stop == false){
+            if (this.stop == false) {
 
                 this.move();
             }
-            // System.out.println("Officer" + this.id+" de anthill "+this.queen.id+" called"+"\n");
             try {
-                System.out.println("Officer stop");
-                thread.sleep(50);
+                thread.sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        }
 
+            // IF order has changed order will be transmitted :
+
+
+            if (this.must_ho_home ==true) {
+
+
+
+                for (Worker worker : this.queen.workers) {
+
+                    // TRANSMITTING THE ORDER to all workers
+                    final SubmissionPublisher<Integer> publisher =
+                            new SubmissionPublisher<>(ForkJoinPool.commonPool(), 20);
+
+                    // System.out.println("Officer" + this.id+" de anthill "+this.queen.id+" called"+"\n");
+                    try {
+
+                        publisher.subscribe(worker);
+                        int order = this.order;
+                        int MAX_SECONDS_TO_KEEP_IT_WHEN_NO_SPACE = 2;
+                        final int lag = publisher.offer(
+                                order,
+                                MAX_SECONDS_TO_KEEP_IT_WHEN_NO_SPACE,
+                                TimeUnit.SECONDS,
+                                (subscriber, msg) -> {
+                                    subscriber.onError(
+                                            new RuntimeException("Hey " + ((Worker) subscriber)
+                                                    .getSubscriberName() + "! You are too slow getting orders" +
+                                                    " and we don't have more space for them! " +
+                                                    " : " + msg));
+                                    return false; // don't retry, we don't believe in second opportunities
+                                });
+
+                        thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+
+
+        }
     }
 
 
@@ -148,11 +184,11 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
     // order 0 : go home , order 1 : collect resources
     public void onNext(final Integer order) {
         if (order == 0) {
-            System.out.println("GO HOME "+ this.color);
+            System.out.println("OFFICER GO HOME "+ this.color);
             this.must_ho_home = true;
         }
         if (order == 1) {
-            System.out.println("...");
+            //System.out.println("...");
         }
         try {
             this.thread.sleep(150);
@@ -177,6 +213,7 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
         return subscriberName;
     }
 }
+
 
 /*
 

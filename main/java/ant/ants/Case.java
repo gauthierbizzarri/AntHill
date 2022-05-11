@@ -50,7 +50,7 @@ public class Case {
         
     }
 
-	public void  set_anthill () {
+	public void  set_anthill ( ) {
 		this.is_anthill = true;
 		this.ressources = 0;
 	}
@@ -69,7 +69,6 @@ public class Case {
 	}
 
 	public void set_color(String color){
-		if (this.is_anthill){ return;}
 		this.color = color;}
 
 	public void draw(GraphicsContext gc) {
@@ -92,29 +91,12 @@ public class Case {
 
 		gc.setLineWidth(2);
 		gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4*this.ressources/10,4*this.ressources/10);
+		gc.setStroke(Color.TRANSPARENT);
 
 
 		// Drawing the anthill
 
-		if (this.is_anthill) {
-				FileInputStream anthill_tile_file = null;
-				try {
-					anthill_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/red_anthill.png");
-				} catch (FileNotFoundException e) {
-					throw new RuntimeException(e);
-				}
-				Image anthill_tile = new Image(anthill_tile_file);
-				gc.drawImage(anthill_tile, this.x * 30, this.y * 30, 30, 30);
 
-				if(this.color.equals("Red")){gc.setStroke(Color.RED);}
-				if(this.color.equals("Green")){gc.setStroke(Color.GREEN);}
-				if(this.color.equals("Blue")){gc.setStroke(Color.BLUE);}
-				gc.setLineWidth(7);
-
-			gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4,4);
-
-
-			}
 			if (this.is_officer) {
 				//gc.setLineWidth(7);
 				//gc.setStroke(Color.RED);
@@ -139,6 +121,25 @@ public class Case {
 				gc.setLineWidth(7);
 				gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4,4);
 			}
+
+		if (this.is_anthill) {
+			FileInputStream anthill_tile_file = null;
+			try {
+				anthill_tile_file = new FileInputStream("/home/bizzarri/eclipse-workspace/ants/src/main/resources/ant/ants/red_anthill.png");
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+			Image anthill_tile = new Image(anthill_tile_file);
+			gc.drawImage(anthill_tile, this.x * 30, this.y * 30, 30, 30);
+
+			if(this.color.equals("Red")){gc.setStroke(Color.RED);}
+			if(this.color.equals("Green")){gc.setStroke(Color.GREEN);}
+			if(this.color.equals("Blue")){gc.setStroke(Color.BLUE);}
+			gc.setLineWidth(7);
+
+			gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,4,4);
+		}
+
 			if (this.is_worker) {
 				// Draw a blue circle to represents worker
 			/*
@@ -156,14 +157,14 @@ public class Case {
 					throw new RuntimeException(e);
 				}
 				Image ant_tile = new Image(ant_tile_file);
-				gc.drawImage(ant_tile, this.x * 30, this.y * 30, 20, 20);
+				gc.drawImage(ant_tile, this.x * 30, this.y * 30, 15, 15);
 				if(this.color.equals("Red")){gc.setStroke(Color.RED);}
 				if(this.color.equals("Green")){gc.setStroke(Color.GREEN);}
 				if(this.color.equals("Blue")){gc.setStroke(Color.BLUE);}
 
 
-				gc.setLineWidth(7);
-				gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,2,2);
+				gc.setLineWidth(5);
+				gc.strokeOval(this.x*30 +30/4 ,this.y*30 + 30/4,1,1);
 
 
 

@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.time.Duration;
 
 public class Game extends Application{
 
@@ -141,24 +142,32 @@ public class Game extends Application{
         map.add_anthill();
 
 
-
+        long start = System.nanoTime();
+        long duration = Duration.ofMinutes(2).toNanos();
         new AnimationTimer()
         {
             @Override
-            public void handle(long currentNanoTime)
-            {
-                GraphicsContext gc = canvas.getGraphicsContext2D();
-                gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                boolean generated = false;
+            public void handle(long now) {
+                if (now > duration + start) {
+                    this.stop();
+                } else {
+                    GraphicsContext gc = canvas.getGraphicsContext2D();
+                    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                    // DRAW CLOCK
 
-                try {
-                    map.draw_graphic(gc);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
+                    // gc.fillText(String.valueOf((duration+start)/(1*1000*1000*1000)),25*32,20 + 15*32);
+                    boolean generated = false;
+
+                    try {
+                        map.draw_graphic(gc);
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                    }
                 }
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) { }
             }
         }.start();
 
