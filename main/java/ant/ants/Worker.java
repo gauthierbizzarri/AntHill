@@ -132,27 +132,24 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 
 	public void run(){
 		 while(true) {
+			 // Worker has to stop , the order of going home has passed and the worker is at his anthill
 			 if (this.stop == true) {
-				 System.out.println(" WORKER "+this.color+" stoped");
 				 break;
 			 }
 
-			 // System.out.println("Worker MOVE"+this.resources);
-			 //System.out.println("Worker called"+"\n");
 
-			 // If the worker has gathered resources , and the worker is at his anthill , drop the resources.
-
-
+			 // If the worker has gathered resources or has received the order to go home , the worker go home
 			 if (this.must_ho_home==true || this.resources >= 5) {
 				 this.go_back_home();
 			 }
+
+			 // If the worker has received the order to go home and his at home ( his anthill) the worker has to stop
 			 if (this.must_ho_home==true && this.x == this.queen.x && this.y == this.queen.y) {
 				 this.stop = true;
 			 }
-			 if (this.stop == true) {
-				 System.out.println(" WORKER "+this.color+" stoped");
-			 }
 
+
+			 // IF the worker has resources and is at his anthill , the worker will drop resources in the anthill
 			 if (this.x == this.queen.x && this.y == this.queen.y && this.resources > 0) {
 				 this.queen.resources = this.queen.resources + this.resources;
 				 this.resources = 0;
@@ -165,12 +162,9 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 				 this.move();
 			 }
 
-			 // If the worker has 5 or more resources it will go back home by taking a direct path using the
-
-
-
+			 // 50 ms beetwen each action
 			 try {
-				 thread.sleep(100);
+				 thread.sleep(50);
 			 } catch (InterruptedException e) {
 				 throw new RuntimeException(e);
 			 }

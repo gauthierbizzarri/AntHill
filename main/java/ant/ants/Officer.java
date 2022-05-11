@@ -184,7 +184,7 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
     // order 0 : go home , order 1 : collect resources
     public void onNext(final Integer order) {
         if (order == 0) {
-            System.out.println("OFFICER GO HOME "+ this.color);
+            //System.out.println("OFFICER GO HOME "+ this.color);
             this.must_ho_home = true;
         }
         if (order == 1) {

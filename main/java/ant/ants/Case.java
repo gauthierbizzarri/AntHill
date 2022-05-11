@@ -69,6 +69,9 @@ public class Case {
 	}
 
 	public void set_color(String color){
+		if (this.color!="" && this.is_anthill==true){
+			return;
+		}
 		this.color = color;}
 
 	public void draw(GraphicsContext gc) {
@@ -132,6 +135,7 @@ public class Case {
 			Image anthill_tile = new Image(anthill_tile_file);
 			gc.drawImage(anthill_tile, this.x * 30, this.y * 30, 30, 30);
 
+			System.out.println(this.color);
 			if(this.color.equals("Red")){gc.setStroke(Color.RED);}
 			if(this.color.equals("Green")){gc.setStroke(Color.GREEN);}
 			if(this.color.equals("Blue")){gc.setStroke(Color.BLUE);}
