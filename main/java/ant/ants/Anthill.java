@@ -35,25 +35,29 @@ public class Anthill extends Thread {
 		this.order = 1;
 		this.resources = new ArrayList<>();
 		officers = new ArrayList<Officer>();
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////           ANTHILL CREATION                 ///////////////////////////////////////////////
+	///////////////////////           5 OFFICERS                       ////////////////////////////////////////////////
+	//////////////////////	         10 WORKERS FOR EACH OFFICER       ///////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		// INIT OFFICERS
-		for (int i = 0; i <1 ; i++) {
-
+		// CREATING 5 OFFICERS FOR THE ANTHILL
+		for (int i = 0; i <5 ; i++) {
 			Officer officer = new Officer(this, i);
 			officers.add(officer);
+			// START OFFICER THREAD
 			officer.start();
 
-			// Adding the officer to the map , the officer will be displayed at the anthill position
+			// ADDING THE OFFICER TO THE map , IT WILL BE SPAWNED AT ANTHILL POSITION
 			Case tile_officer;
 			tile_officer = this.map.get_tile_with_coord(this.x, this.y);
 			tile_officer.set_officer();
 
 
-			// CREATE WORKERS WHO BELONGS TO THE OFFICER
-
+			// CREATE WORKERS WHO BELONG TO THE OFFICER
 			workers = new ArrayList<Worker>();
 
-			for (int j = 0; j < 1; j++) {
+			for (int j = 0; j < 5; j++) {
 
 				Worker worker = new Worker(this, j,officer);
 				workers.add(worker);

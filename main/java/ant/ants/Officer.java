@@ -37,6 +37,7 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
     }
 
     public void move() {
+        synchronized (ThreadLocalRandom.current()) {
 
 
             // Remove old worker position from the map
@@ -75,33 +76,36 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
             tile_officer.set_officer();
             // Update the color
             tile_officer.set_color(this.color);
+        }
     }
-    public void go_back_home(){
-        // Drawing a direct line (Pythagore) to the home
-        int x_home = this.queen.x ;
-        int y_home = this.queen.y;
-        int delta_x = x_home - this.x ;
-        int delta_y = y_home - this.y;
-        double delta_x_sqr = delta_x*delta_x;
-        double delta_y_sqr = delta_y*delta_y;
-        double sqrt_delta = delta_x_sqr-delta_y_sqr;
-        double length = Math.pow(sqrt_delta,1/2);
+    public void go_back_home() {
+        synchronized (ThreadLocalRandom.current()) {
+            // Drawing a direct line (Pythagore) to the home
+            int x_home = this.queen.x;
+            int y_home = this.queen.y;
+            int delta_x = x_home - this.x;
+            int delta_y = y_home - this.y;
+            double delta_x_sqr = delta_x * delta_x;
+            double delta_y_sqr = delta_y * delta_y;
+            double sqrt_delta = delta_x_sqr - delta_y_sqr;
+            double length = Math.pow(sqrt_delta, 1 / 2);
 
-        // Remove old worker position from the map
-        Case tile_old_officer;
-        tile_old_officer = this.queen.map.get_tile_with_coord(this.x,this.y);
-        tile_old_officer.unset_officer();
-        tile_old_officer.set_color("");
+            // Remove old worker position from the map
+            Case tile_old_officer;
+            tile_old_officer = this.queen.map.get_tile_with_coord(this.x, this.y);
+            tile_old_officer.unset_officer();
+            tile_old_officer.set_color("");
 
 
-        this.x = (int) (this.x + delta_x/length);
-        this.y = (int) (this.y + delta_y/length);
+            this.x = (int) (this.x + delta_x / length);
+            this.y = (int) (this.y + delta_y / length);
 
-        // Update worker position on the map
-        Case tile_officer;
-        tile_officer = this.queen.map.get_tile_with_coord(this.x,this.y);
-        tile_officer.set_officer();
-        tile_officer.set_color(this.color);
+            // Update worker position on the map
+            Case tile_officer;
+            tile_officer = this.queen.map.get_tile_with_coord(this.x, this.y);
+            tile_officer.set_officer();
+            tile_officer.set_color(this.color);
+        }
     }
       
     public void run() {
@@ -123,7 +127,7 @@ public class Officer  extends Ant  implements Flow.Subscriber<Integer>{
                 this.move();
             }
             try {
-                thread.sleep(100);
+                thread.sleep(50);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
