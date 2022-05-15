@@ -112,32 +112,33 @@ public class Worker extends Ant implements Flow.Subscriber<Integer> {
 	public void run() {
 		while (true) {
 
-			System.out.println(this.stop);
 			// Worker has to stop , the order of going home has passed and the worker is at his anthill
+			if (this.stop == true) {
+				break;
+			}
 
-			if (this.must_ho_home && this.x == this.queen.x && this.y == this.queen.y) {
+
+			// If the worker has gathered resources or has received the order to go home , the worker go home
+			if (this.must_ho_home==true || this.ressouces.size() >4) {
+				this.go_back_home();
+			}
+
+			// If the worker has received the order to go home and his at home ( his anthill) the worker has to stop
+			if (this.must_ho_home==true && this.x == this.queen.x && this.y == this.queen.y) {
 				this.stop = true;
 			}
 
+
+
 			// If the worker has gathered resources or has received the order to go home , the worker go home
-			if ( this.stop==false ) {
 				//If the worker has not a full inventory (<5 resources it moves using move() method (ie the ant will move x,y randomly(-1,0,+1)
+
 				if (this.stop == false && this.ressouces.size() < 5) {
 					//System.out.println("Worker MOVE" + "\n");
 					this.move();
 				}
 
-				if (this.must_ho_home == true || this.ressouces.size() > 4) {
-					{
-						this.go_back_home();
-					}
-				}
-			}
-
-
-
-
-
+				////////////// RESOURCE HANDLER
 			Case tile_worker;
 			tile_worker = this.queen.map.get_tile_with_coord(this.x, this.y);
 			// IF the worker has resources and is at his anthill , the worker will drop resources in the anthill
