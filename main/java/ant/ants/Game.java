@@ -66,7 +66,7 @@ public class Game extends Application{
         //////////////////////////////////////
         FloatControl gainControl =
                 (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(-10.0f); // Reduce volume by 10 decibels.
+        gainControl.setValue(-15.0f); // Reduce volume by 15 decibels.
 
         clip.start();
 
